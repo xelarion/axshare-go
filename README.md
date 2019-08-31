@@ -1,3 +1,9 @@
+Dockerize axshare-vue
+
+    docker build -t ervincheung/axshare_go .
+    docker run -d -p 10524:10524 --rm --name dockerize-axshare_go ervincheung/axshare_go
+***
+
 **api/**
 （Service 应用相关目录）一般用来放着 OpenAPI/Swagger 的 spec、JSON 的 schema 文件或者 protocol 的定义。
 

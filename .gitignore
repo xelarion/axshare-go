@@ -1,6 +1,6 @@
 *.idea
 log/*
 configs/config.yaml
-axure_go
+axshare_go
 
 !/log/.keep
