@@ -1,0 +1,15 @@
+# 数据库配置信息
+axshare_db:
+  host: 127.0.0.1
+  port: 3306
+  database: axshare
+  user: root
+  password: 123456
+  encoding: utf8mb4
+http:
+  port: 10524
+
+#axure web host
+web_host: https://axure.vicw.com
+# admin host
+admin_host: https://www.vicw.com
