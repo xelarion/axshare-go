@@ -24,8 +24,8 @@ COPY . .
 # Build the Go app
 RUN  go build -o axshare_go_app cmd/axshare_go.go
 
-# Expose port 8080 to the outside world
-EXPOSE 8080
+# Expose port 10524 to the outside world
+EXPOSE 10524
 
 # Command to run the executable
 CMD ["./axshare_go_app"]

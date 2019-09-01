@@ -1,6 +1,12 @@
 Dockerize axshare-vue
 
+     chmod +x deployments/docker.sh
+     ./deployments/docker.sh
+     
+    // or run following
+    // build app
     docker build -t ervincheung/axshare_go .
+    // run single app
     docker run -d -p 10524:10524 --rm --name dockerize-axshare_go ervincheung/axshare_go
 ***
 

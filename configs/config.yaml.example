@@ -1,10 +1,10 @@
 # 数据库配置信息
 axshare_db:
-  host: 127.0.0.1
+  host: db_mysql
   port: 3306
   database: axshare
-  user: root
-  password: 123456
+  user: ervincheung
+  password: 1qaz2wsx
   encoding: utf8mb4
 http:
   port: 10524
