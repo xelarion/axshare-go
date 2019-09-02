@@ -5,7 +5,7 @@ import (
 	"axshare_go/internal/models"
 	"errors"
 	"github.com/gin-gonic/gin"
-	go_rsp "github.com/standard-rsp/go-rsp"
+	gorsp "github.com/standard-rsp/gorsp"
 	"net/http"
 	"strconv"
 )
@@ -24,8 +24,8 @@ func GetAttachments(c *gin.Context) {
 	var attachments []models.Attachment
 	//db.AxshareDb.Model(&axure).Related(&attachments, "Attachments")
 	db.AxshareDb.Model(&axure).Preload("User").Association("Attachments").Find(&attachments)
-	c.JSON(http.StatusOK, go_rsp.RspPagData(
-		FormatList(attachments), go_rsp.OK,
-		go_rsp.NewBaseMessage("", ""),
-		go_rsp.BasePaginate{CurrentPage: 1, TotalPages: 20, TotalCount: 201, PerPage: 10}))
+	c.JSON(http.StatusOK, gorsp.RspPagData(
+		FormatList(attachments), gorsp.OK,
+		gorsp.NewMessage("", ""),
+		gorsp.NewPaginate(1, 102, 10)))
 }

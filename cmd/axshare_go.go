@@ -5,6 +5,7 @@ import (
 	"axshare_go/internal/db"
 	tasks "axshare_go/internal/task"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"os"
@@ -25,6 +26,11 @@ func main() {
 	serverChan := make(chan int)
 
 	tasks.CronMain()
+
+	if isProductionEnv() {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
 	go api.HttpServerRun()
 
 	<-serverChan
@@ -43,4 +49,10 @@ func initLogger() {
 	if err == nil {
 		log.SetOutput(file)
 	}
+}
+
+
+func isProductionEnv() bool {
+	env := viper.GetString( "env")
+	return env == "production"
 }

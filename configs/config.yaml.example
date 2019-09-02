@@ -6,6 +6,9 @@ axshare_db:
   user: ervincheung
   password: 1qaz2wsx
   encoding: utf8mb4
+
+env: production
+
 http:
   port: 10524
 
