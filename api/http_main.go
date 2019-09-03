@@ -4,6 +4,7 @@ import (
 	"axshare_go/api/v1/attachment"
 	"axshare_go/api/v1/axure"
 	"axshare_go/api/v1/axure_group"
+	"axshare_go/api/v1/user"
 	app "axshare_go/internal/pkg"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -23,6 +24,7 @@ func HttpServerRun() {
 
 	v1 := router.Group("/api/v1")
 	{
+		v1.POST("/user/login", user.Authenticate)
 		v1.GET("/axure_groups", axure_group.FetchList)
 		v1.GET("/axure_groups/:axure_group_id/axures", axure.GetAxures)
 		v1.GET("/axure_groups/:axure_group_id/axures/:axure_id/attachments", attachment.GetAttachments)

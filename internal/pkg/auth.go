@@ -22,9 +22,8 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 		tokenHeader := c.GetHeader("Authorization") //Grab the token from the header
 
 		if !isAuthorized(tokenHeader) {
-			response := ogs.RspBase(ogs.StatusInvalidToken,
-				ogs.NewMessage("Invalid Token", "error"))
-			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+			response := ogs.RspBase(ogs.StatusInvalidToken, ogs.ErrorMessage("Invalid Token"))
+			c.AbortWithStatusJSON(http.StatusOK, response)
 			return
 		}
 
