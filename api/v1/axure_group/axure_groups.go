@@ -4,15 +4,15 @@ import (
 	"axshare_go/internal/db"
 	"axshare_go/internal/models"
 	"github.com/gin-gonic/gin"
-	gorsp "github.com/standard-rsp/gorsp"
+	"github.com/ogsapi/ogs-go"
 	"net/http"
 )
 
 func FetchList(c *gin.Context) {
 	var axureGroups []models.AxureGroup
 	db.AxshareDb.Model(&models.AxureGroup{}).Find(&axureGroups)
-	c.JSON(http.StatusOK, gorsp.RspPagData(
-		FormatList(axureGroups), gorsp.OK,
-		gorsp.NewMessage("", ""),
-		gorsp.NewPaginate(1, 102, 10)))
+	c.JSON(http.StatusOK, ogs.RspOKWithPaginate(
+		ogs.BlankMessage(),
+		FormatList(axureGroups),
+		ogs.NewPaginate(1, 101, 10)))
 }

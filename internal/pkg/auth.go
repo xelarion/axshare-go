@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/gin-gonic/gin"
-	gorsp "github.com/standard-rsp/gorsp"
+	"github.com/ogsapi/ogs-go"
 	"net/http"
 )
 
@@ -22,10 +22,8 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 		tokenHeader := c.GetHeader("Authorization") //Grab the token from the header
 
 		if !isAuthorized(tokenHeader) {
-			response := gorsp.RspBaseData(
-				nil,
-				gorsp.StatusInvalidToken,
-				gorsp.NewMessage("Invalid Token", "error"))
+			response := ogs.RspBase(ogs.StatusInvalidToken,
+				ogs.NewMessage("Invalid Token", "error"))
 			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 			return
 		}
