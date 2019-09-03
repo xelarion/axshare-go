@@ -3,7 +3,6 @@ package attachment
 import (
 	"axshare_go/internal/db"
 	"axshare_go/internal/models"
-	"errors"
 	"github.com/gin-gonic/gin"
 	gorsp "github.com/standard-rsp/gorsp"
 	"net/http"
@@ -11,8 +10,6 @@ import (
 )
 
 func GetAttachments(c *gin.Context) {
-	_ = errors.New("fsdf")
-
 	if c.Param("axure_id") == "" {
 		c.JSON(http.StatusNotFound, nil)
 		return
