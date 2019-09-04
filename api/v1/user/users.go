@@ -13,10 +13,10 @@ func Authenticate(c *gin.Context) {
 	err := json.NewDecoder(c.Request.Body).Decode(account) //decode the request body into struct and failed if any error occur
 	if err != nil {
 		c.JSON(http.StatusOK,
-			ogs.RspBase(ogs.StatusInvalidToken, ogs.ErrorMessage("Invalid Token")))
+			ogs.RspBase(ogs.StatusSystemError, ogs.ErrorMessage("Invalid Request")))
 		return
 	}
 
-	resp := models.Login(account.Email, account.Password)
+	resp := models.Login(account.Email, account.UserName, account.Password)
 	c.JSON(http.StatusOK, resp)
 }

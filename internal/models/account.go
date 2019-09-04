@@ -21,7 +21,8 @@ type Token struct {
 type Account struct {
 	ID       uint   `gorm:"primary_key"`
 	Email    string `json:"email"`
-	Password string `json:"password"`
+	UserName string `gorm:"column:nickname" json:"username"`
+	Password string `gorm:"column:encrypted_password" json:"password"`
 	Token    string `json:"token";sql:"-"`
 }
 
@@ -29,10 +30,9 @@ func (Account) TableName() string {
 	return "users"
 }
 
-func Login(email, password string) interface{} {
-
+func Login(email, username, password string) interface{} {
 	account := Account{}
-	err := db.AxshareDb.Debug().Where("email = ?", email).First(&account).Error
+	err := db.AxshareDb.Debug().Where(&Account{Email: email, UserName: username}).First(&account).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return ogs.RspBase(ogs.StatusUserNotFound, ogs.ErrorMessage("用户不存在！"))
