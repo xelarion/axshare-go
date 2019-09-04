@@ -20,6 +20,8 @@ func HttpServerRun() {
 	// 定义路由
 	router := gin.Default()
 
+	app.AllowRouterCors(router)
+
 	router.Use(app.TokenAuthMiddleware())
 
 	v1 := router.Group("/api/v1")

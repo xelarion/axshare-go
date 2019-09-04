@@ -6,6 +6,7 @@ import (
 	tasks "axshare_go/internal/task"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"os"
@@ -18,6 +19,12 @@ func main() {
 	log.Info("axshare main start")
 
 	initConfig()
+
+	// 从.env文件加载env变量
+	e := godotenv.Load()
+	if e != nil {
+		fmt.Print(e)
+	}
 
 	db.InitDbConnection("axshare_db")
 
@@ -51,8 +58,7 @@ func initLogger() {
 	}
 }
 
-
 func isProductionEnv() bool {
-	env := viper.GetString( "env")
+	env := viper.GetString("env")
 	return env == "production"
 }
