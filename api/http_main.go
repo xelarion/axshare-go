@@ -27,6 +27,8 @@ func HttpServerRun() {
 	v1 := router.Group("/api/v1")
 	{
 		v1.POST("/user/login", user.Authenticate)
+		v1.POST("/user/logout", user.DestroyAuthorization)
+		v1.GET("/user/info", user.GetInfo)
 		v1.GET("/axure_groups", axure_group.FetchList)
 		v1.GET("/axure_groups/:axure_group_id/axures", axure.GetAxures)
 		v1.GET("/axure_groups/:axure_group_id/axures/:axure_id/attachments", attachment.GetAttachments)

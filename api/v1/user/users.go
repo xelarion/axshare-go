@@ -2,12 +2,14 @@ package user
 
 import (
 	"axshare_go/internal/models"
+	"axshare_go/internal/utils"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/ogsapi/ogs-go"
 	"net/http"
 )
 
+// 授权登录
 func Authenticate(c *gin.Context) {
 	account := &models.Account{}
 	err := json.NewDecoder(c.Request.Body).Decode(account) //decode the request body into struct and failed if any error occur
@@ -17,6 +19,22 @@ func Authenticate(c *gin.Context) {
 		return
 	}
 
-	resp := models.Login(account.Email, account.UserName, account.Password)
+	resp := models.Login(account.Email, account.Username, account.Password)
 	c.JSON(http.StatusOK, resp)
+}
+
+// 销毁授权
+func DestroyAuthorization(c *gin.Context) {
+	user := models.FindUserbyToken(utils.GetHeaderToken(c))
+	err := user.DestroyToken()
+	if err != nil {
+		c.JSON(http.StatusOK, ogs.RspOK(ogs.ErrorMessage("操作失败！")))
+	}
+	c.JSON(http.StatusOK, ogs.RspOK(ogs.SuccessMessage("退出成功！")))
+}
+
+// 获取用户信息
+func GetInfo(c *gin.Context) {
+	user := models.FindUserbyToken(utils.GetHeaderToken(c))
+	c.JSON(http.StatusOK, ogs.RspOKWithData(ogs.BlankMessage(), user))
 }

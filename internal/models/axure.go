@@ -14,7 +14,7 @@ type Axure struct {
 	Name         string
 	Link         string
 	Desc         string
-	AxureGroupID uint
+	AxureGroupId uint
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 	Uuid         string

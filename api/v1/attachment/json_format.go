@@ -12,7 +12,7 @@ func FormatList(attachments []models.Attachment) []map[string]interface{} {
 		data["is_released"] = attachment.IsReleased()
 		data["web_link"] = attachment.WebLink()
 		data["updated_at"] = attachment.UpdatedAt
-		data["user"] = map[string]interface{}{"nickname": attachment.User.Nickname}
+		data["user"] = map[string]interface{}{"username": attachment.User.Username}
 		json[i] = data
 	}
 	return json
