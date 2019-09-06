@@ -32,6 +32,7 @@ func HttpServerRun() {
 		v1.GET("/axure_groups", axure_group.FetchList)
 		v1.GET("/axure_groups/:axure_group_id/axures", axure.GetAxures)
 		v1.GET("/axure_groups/:axure_group_id/axures/:axure_id/attachments", attachment.GetAttachments)
+		v1.GET("/axure_groups/:axure_group_id/axure/:id", axure.GetAxure)
 	}
 	port := viper.GetString("http.port")
 	_ = router.Run(":" + port)

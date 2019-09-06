@@ -20,7 +20,7 @@ func GetAttachments(c *gin.Context) {
 	db.AxshareDb.First(&axure, axureId)
 	var attachments []models.Attachment
 	//db.AxshareDb.Model(&axure).Related(&attachments, "Attachments")
-	db.AxshareDb.Model(&axure).Preload("User").Association("Attachments").Find(&attachments)
+	db.AxshareDb.Model(&axure).Preload("User").Order("id desc").Association("Attachments").Find(&attachments)
 	c.JSON(http.StatusOK, ogs.RspOKWithPaginate(
 		ogs.BlankMessage(),
 		FormatList(attachments),

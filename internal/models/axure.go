@@ -10,15 +10,15 @@ import (
 
 type Axure struct {
 	gorm.Association
-	ID           uint `gorm:"primary_key"`
-	Name         string
-	Link         string
-	Desc         string
-	AxureGroupId uint
-	CreatedAt    time.Time
-	UpdatedAt    time.Time
-	Uuid         string
-	Attachments  []Attachment `gorm:"polymorphic:Reference;polymorphic_value:Axure"`
+	ID           uint         `json:"id" gorm:"primary_key"`
+	Name         string       `json:"name"`
+	Link         string       `json:"link"`
+	Desc         string       `json:"desc"`
+	AxureGroupId uint         `json:"axure_group_id"`
+	CreatedAt    time.Time    `json:"created_at"`
+	UpdatedAt    time.Time    `json:"updated_at"`
+	Uuid         string       `json:"uuid"`
+	Attachments  []Attachment `json:"attachments" gorm:"polymorphic:Reference;polymorphic_value:Axure"`
 }
 
 // 原型静态web链接
