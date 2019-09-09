@@ -21,7 +21,7 @@ type Token struct {
 type Account struct {
 	ID       uint   `gorm:"primary_key"`
 	Email    string `json:"email"`
-	Username string `gorm:"column:nickname" json:"username"`
+	Username string `json:"username"`
 	Password string `gorm:"column:encrypted_password" json:"password"`
 	Token    string `json:"token";sql:"-"`
 }

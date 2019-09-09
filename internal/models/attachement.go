@@ -6,16 +6,13 @@ import (
 )
 
 type Attachment struct {
-	ID            uint `gorm:"primary_key"`
-	ReferenceId   uint
-	ReferenceType string
-	key           string
-	CreatedAt     time.Time
-	UpdatedAt     time.Time
-	UserId        uint
-	User          User
-	Link          string
-	Desc          string
+	ID        uint      `json:"id" gorm:"primary_key"`
+	Desc      string    `json:"desc"`
+	Link      string    `json:"link"`
+	UserId    uint      `json:"user_id"`
+	User      User      `json:"user"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 // 文件是否解压
@@ -29,19 +26,11 @@ func (c *Attachment) WebLink() string {
 	if !c.IsReleased() {
 		return ""
 	}
-	if c.ReferenceType == "Axure" {
-		webHost := viper.GetString("web_host")
-		return webHost + c.Link
-	} else {
-		return ""
-	}
+	webHost := viper.GetString("web_host")
+	return webHost + c.Link
 }
 
 // 原型压缩包下载地址
 func (c *Attachment) DownloadUrl() string {
-	if c.ReferenceType == "Axure" {
-		return ""
-	} else {
-		return ""
-	}
+	return ""
 }

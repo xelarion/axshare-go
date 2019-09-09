@@ -2,23 +2,21 @@ package models
 
 import (
 	"fmt"
-	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
 	"strings"
 	"time"
 )
 
 type Axure struct {
-	gorm.Association
 	ID           uint         `json:"id" gorm:"primary_key"`
 	Name         string       `json:"name"`
-	Link         string       `json:"link"`
 	Desc         string       `json:"desc"`
-	AxureGroupId uint         `json:"axure_group_id"`
+	Link         string       `json:"link"`
+	Key          string       `json:"key"`
 	CreatedAt    time.Time    `json:"created_at"`
 	UpdatedAt    time.Time    `json:"updated_at"`
-	Uuid         string       `json:"uuid"`
-	Attachments  []Attachment `json:"attachments" gorm:"polymorphic:Reference;polymorphic_value:Axure"`
+	AxureGroupId uint         `json:"axure_group_id"`
+	Attachments  []Attachment `json:"attachments"`
 }
 
 // 原型静态web链接
@@ -34,7 +32,7 @@ func (c *Axure) WebLink() string {
 func (c *Axure) PermanentLink() string {
 	adminHost := viper.GetString("admin_host")
 	permanentLink := strings.Join([]string{
-		adminHost, "/axures/", fmt.Sprint(c.ID), "?key=", c.Uuid}, "")
+		adminHost, "/axures/", fmt.Sprint(c.ID), "?key=", c.Key}, "")
 	return permanentLink
 }
 

@@ -29,10 +29,15 @@ func HttpServerRun() {
 		v1.POST("/user/login", user.Authenticate)
 		v1.POST("/user/logout", user.DestroyAuthorization)
 		v1.GET("/user/info", user.GetInfo)
+
 		v1.GET("/axure_groups", axure_group.FetchList)
+
 		v1.GET("/axure_groups/:axure_group_id/axures", axure.GetAxures)
-		v1.GET("/axure_groups/:axure_group_id/axures/:axure_id/attachments", attachment.GetAttachments)
 		v1.GET("/axure_groups/:axure_group_id/axure/:id", axure.GetAxure)
+		v1.POST("/axure_groups/:axure_group_id/axures", axure.CreateAxure)
+		v1.PUT("/axure_groups/:axure_group_id/axure/:id", axure.UpdateAxure)
+
+		v1.GET("/axure_groups/:axure_group_id/axures/:axure_id/attachments", attachment.GetAttachments)
 	}
 	port := viper.GetString("http.port")
 	_ = router.Run(":" + port)

@@ -1,10 +1,9 @@
 package db
 
 import (
+	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-
-	"fmt"
 	"github.com/spf13/viper"
 	"time"
 )

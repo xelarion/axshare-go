@@ -3,6 +3,7 @@ package main
 import (
 	"axshare_go/api"
 	"axshare_go/internal/db"
+	"axshare_go/internal/db/migrate"
 	tasks "axshare_go/internal/task"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -27,6 +28,7 @@ func main() {
 	}
 
 	db.InitDbConnection("axshare_db")
+	migrate.Migrate()
 
 	//db.AxshareDb.LogMode(true)
 
