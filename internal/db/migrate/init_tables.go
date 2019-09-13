@@ -14,3 +14,8 @@ func Migrate() {
 		&models.Axure{},
 		&models.Attachment{})
 }
+
+func Seed() {
+	account := models.Account{Email: "admin@qq.com", Username: "admin", Password: "admin123456"}
+	account.Create()
+}

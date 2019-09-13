@@ -2,20 +2,18 @@ package models
 
 import (
 	"fmt"
+	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
 	"strings"
-	"time"
 )
 
 type Axure struct {
-	ID           uint         `json:"id" gorm:"primary_key"`
+	gorm.Model
 	Name         string       `json:"name"`
 	Desc         string       `json:"desc"`
 	Link         string       `json:"link"`
 	Key          string       `json:"key"`
-	CreatedAt    time.Time    `json:"created_at"`
-	UpdatedAt    time.Time    `json:"updated_at"`
-	AxureGroupId uint         `json:"axure_group_id"`
+	AxureGroupId uint         `gorm:"index"json:"axure_group_id"`
 	Attachments  []Attachment `json:"attachments"`
 }
 

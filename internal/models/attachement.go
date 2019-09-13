@@ -1,18 +1,16 @@
 package models
 
 import (
+	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
-	"time"
 )
 
 type Attachment struct {
-	ID        uint      `json:"id" gorm:"primary_key"`
-	Desc      string    `json:"desc"`
-	Link      string    `json:"link"`
-	UserId    uint      `json:"user_id"`
-	User      User      `json:"user"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	gorm.Model
+	Desc   string `json:"desc"`
+	Link   string `json:"link"`
+	UserId uint   `gorm:"index"json:"user_id"`
+	User   User   `json:"user"`
 }
 
 // 文件是否解压

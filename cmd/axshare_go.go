@@ -29,6 +29,7 @@ func main() {
 
 	db.InitDbConnection("axshare_db")
 	migrate.Migrate()
+	migrate.Seed()
 
 	//db.AxshareDb.LogMode(true)
 

@@ -25,8 +25,8 @@ func Authenticate(c *gin.Context) {
 
 // 销毁授权
 func DestroyAuthorization(c *gin.Context) {
-	user := models.FindUserbyToken(utils.GetHeaderToken(c))
-	err := user.DestroyToken()
+	account := models.FindAccountByToken(utils.GetHeaderToken(c))
+	err := account.DestroyToken()
 	if err != nil {
 		c.JSON(http.StatusOK, ogs.RspOK(ogs.ErrorMessage("操作失败！")))
 	}
@@ -35,6 +35,6 @@ func DestroyAuthorization(c *gin.Context) {
 
 // 获取用户信息
 func GetInfo(c *gin.Context) {
-	user := models.FindUserbyToken(utils.GetHeaderToken(c))
+	user := models.FindAccountByToken(utils.GetHeaderToken(c))
 	c.JSON(http.StatusOK, ogs.RspOKWithData(ogs.BlankMessage(), user))
 }
