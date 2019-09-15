@@ -1,6 +1,7 @@
 package models
 
 import (
+	"axshare_go/internal/db"
 	"fmt"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
@@ -9,8 +10,7 @@ import (
 
 type Axure struct {
 	gorm.Model
-	Name         string       `json:"name"`
-	Desc         string       `json:"desc"`
+	Name         string       `json:"name" xml:"name" binding:"required"`
 	Link         string       `json:"link"`
 	Key          string       `json:"key"`
 	AxureGroupId uint         `gorm:"index"json:"axure_group_id"`
@@ -38,4 +38,10 @@ func (c *Axure) PermanentLink() string {
 func (c *Axure) IsReleased() bool {
 	isReleased := len(c.Link) > 0
 	return isReleased
+}
+
+func (c *Axure) LatestAttachment() Attachment {
+	attachment := Attachment{}
+	db.AxshareDb.Model(&c).Related(&[]Attachment{}).Order("id desc").First(&attachment)
+	return attachment
 }

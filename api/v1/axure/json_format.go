@@ -10,7 +10,7 @@ func FormatList(axures []models.Axure) []map[string]interface{} {
 	for i, axure := range axures {
 		var data = make(map[string]interface{})
 		data["id"] = axure.ID
-		data["desc"] = axure.Desc
+		data["desc"] = axure.LatestAttachment().Desc
 		data["updated_at"] = utils.FormatDateTime(axure.UpdatedAt)
 		data["is_released"] = axure.IsReleased()
 		data["web_link"] = axure.WebLink()

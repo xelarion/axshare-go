@@ -52,10 +52,17 @@ func UpdateAxure(c *gin.Context) {
 }
 
 func CreateAxure(c *gin.Context) {
-	axure := models.Axure{}
-	//jsonBody, _ := json.Marshal(utils.GetBodyParams(c))
-	//_ = json.Unmarshal(jsonBody, &axure)
-	_ = json.NewDecoder(c.Request.Body).Decode(&axure)
+	tx := db.AxshareDb.Begin()
+	axureGroupId, _ := strconv.ParseUint(c.Param("axure_group_id"), 10, 64)
+	params := utils.GetBodyParams(c).(map[string]interface{})
+	axure := models.Axure{Name: params["name"].(string)}
+	axure.AxureGroupId = uint(axureGroupId)
+	attachment := models.Attachment{}
+	jsonBody, _ := json.Marshal(params["attachment"])
+	_ = json.Unmarshal(jsonBody, &attachment)
 	db.AxshareDb.Debug().Create(&axure)
+	attachment.AxureId = axure.ID
+	db.AxshareDb.Debug().Create(&attachment)
+	tx.Commit()
 	c.JSON(http.StatusOK, ogs.RspOKWithData(ogs.BlankMessage(), axure))
 }
