@@ -4,6 +4,7 @@ import (
 	"axshare_go/api/v1/attachment"
 	"axshare_go/api/v1/axure"
 	"axshare_go/api/v1/axure_group"
+	"axshare_go/api/v1/qiniu"
 	"axshare_go/api/v1/user"
 	app "axshare_go/internal/pkg"
 	"github.com/gin-gonic/gin"
@@ -38,6 +39,8 @@ func HttpServerRun() {
 		v1.PUT("/axure_groups/:axure_group_id/axure/:id", axure.UpdateAxure)
 
 		v1.GET("/axure_groups/:axure_group_id/axures/:axure_id/attachments", attachment.GetAttachments)
+
+		v1.GET("/upload/token", qiniu.CreateUploadToken)
 	}
 	port := viper.GetString("http.port")
 	_ = router.Run(":" + port)

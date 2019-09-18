@@ -114,7 +114,7 @@ func (account *Account) Create() map[string]interface{} {
 func (account *Account) GenToken() string {
 	tk := &Token{UserId: account.ID}
 	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
-	tokenString, _ := token.SignedString([]byte(os.Getenv("token_key")))
+	tokenString, _ := token.SignedString([]byte(os.Getenv("TOKEN_KEY")))
 	account.Token = tokenString
 	return tokenString
 }
