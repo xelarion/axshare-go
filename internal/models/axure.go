@@ -12,7 +12,7 @@ type Axure struct {
 	gorm.Model
 	Name         string       `json:"name" xml:"name" binding:"required"`
 	Link         string       `json:"link"`
-	Key          string       `json:"key"`
+	SecretKey    string       `json:"secret_key"`
 	AxureGroupId uint         `gorm:"index"json:"axure_group_id"`
 	Attachments  []Attachment `json:"attachments"`
 }
@@ -30,7 +30,7 @@ func (c *Axure) WebLink() string {
 func (c *Axure) PermanentLink() string {
 	adminHost := viper.GetString("admin_host")
 	permanentLink := strings.Join([]string{
-		adminHost, "/axures/", fmt.Sprint(c.ID), "?key=", c.Key}, "")
+		adminHost, "/axures/", fmt.Sprint(c.ID), "?key=", c.SecretKey}, "")
 	return permanentLink
 }
 

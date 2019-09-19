@@ -8,7 +8,7 @@ import (
 
 func Migrate() {
 	fmt.Println("migrate ...")
-	db.AxshareDb.Debug().AutoMigrate(
+	db.AxshareDb.Set("gorm:table_options", "CHARSET=utf8mb4").Debug().AutoMigrate(
 		&models.User{},
 		&models.AxureGroup{},
 		&models.Axure{},

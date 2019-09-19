@@ -7,11 +7,12 @@ import (
 
 type Attachment struct {
 	gorm.Model
-	Desc    string `json:"desc" xml:"desc" binding:"required"`
-	Link    string `json:"link" xml:"link" binding:"required"`
-	AxureId uint `json:"axure_id" gorm:"index" xml:"axure_id" binding:"required"`
-	UserId  uint   `gorm:"index" json:"user_id"`
-	User    User   `json:"user"`
+	Desc     string `json:"desc" xml:"desc" binding:"required"`
+	Link     string `json:"link"`
+	FileHash string `json:"file_hash"`
+	AxureId  uint   `json:"axure_id" gorm:"index" xml:"axure_id" binding:"required"`
+	UserId   uint   `gorm:"index" json:"user_id"`
+	User     User   `json:"user"`
 }
 
 // 文件是否解压

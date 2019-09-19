@@ -16,10 +16,9 @@ func InitDbConnection(dbKey string) {
 	user := viper.GetString(dbKey + ".user")
 	database := viper.GetString(dbKey + ".database")
 	password := viper.GetString(dbKey + ".password")
-	encoding := viper.GetString(dbKey + ".encoding")
 	connectSql := user + ":" + password + "@tcp(" + host +
 		":" + port + ")/" + database + "?" +
-		"&charset=" + encoding + "&parseTime=True&loc=Local"
+		"&charset=utf8mb4&parseTime=True&parseTime=True&loc=Local"
 	axshareDb, err := gorm.Open("mysql", connectSql)
 	if err != nil {
 		fmt.Println(err)

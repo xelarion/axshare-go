@@ -5,7 +5,6 @@ axshare_db:
   database: axshare
   user: ervincheung
   password: 1qaz2wsx
-  encoding: utf8mb4
 
 env: production
 

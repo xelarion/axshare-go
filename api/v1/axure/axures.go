@@ -44,25 +44,45 @@ func UpdateAxure(c *gin.Context) {
 		return
 	}
 
+	tx := db.AxshareDb.Begin()
+
 	id, _ := strconv.ParseUint(c.Param("id"), 10, 64)
+	params := utils.GetBodyParams(c).(map[string]interface{})
+
 	axure := models.Axure{}
-	params := utils.GetBodyParams(c)
-	db.AxshareDb.Debug().Model(&axure).First(&axure, id).Update(params)
+	db.AxshareDb.First(&axure, id)
+	jsonBody, _ := json.Marshal(params)
+	_ = json.Unmarshal(jsonBody, &axure)
+	db.AxshareDb.Debug().Model(&axure).Updates(params)
+
+	attachment := models.Attachment{AxureId: axure.ID}
+	jsonBody1, _ := json.Marshal(params["attachment"])
+	_ = json.Unmarshal(jsonBody1, &attachment)
+	db.AxshareDb.Debug().Create(&attachment)
+
+	tx.Commit()
+
 	c.JSON(http.StatusOK, ogs.RspOKWithData(ogs.BlankMessage(), axure))
 }
 
 func CreateAxure(c *gin.Context) {
 	tx := db.AxshareDb.Begin()
+
 	axureGroupId, _ := strconv.ParseUint(c.Param("axure_group_id"), 10, 64)
 	params := utils.GetBodyParams(c).(map[string]interface{})
-	axure := models.Axure{Name: params["name"].(string)}
-	axure.AxureGroupId = uint(axureGroupId)
-	attachment := models.Attachment{}
+
+	//axure := models.Axure{Name: params["name"].(string)}
+	axure := models.Axure{AxureGroupId: uint(axureGroupId)}
+	jsonBody1, _ := json.Marshal(params)
+	_ = json.Unmarshal(jsonBody1, &axure)
+	db.AxshareDb.Debug().Create(&axure)
+
+	attachment := models.Attachment{AxureId: axure.ID}
 	jsonBody, _ := json.Marshal(params["attachment"])
 	_ = json.Unmarshal(jsonBody, &attachment)
-	db.AxshareDb.Debug().Create(&axure)
-	attachment.AxureId = axure.ID
 	db.AxshareDb.Debug().Create(&attachment)
+
 	tx.Commit()
-	c.JSON(http.StatusOK, ogs.RspOKWithData(ogs.BlankMessage(), axure))
+
+	c.JSON(http.StatusOK, ogs.RspOKWithData(ogs.SuccessMessage("创建成功！"), axure))
 }
