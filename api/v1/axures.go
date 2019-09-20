@@ -1,4 +1,4 @@
-package axure
+package v1
 
 import (
 	"axshare_go/internal/db"
@@ -21,7 +21,7 @@ func GetAxures(c *gin.Context) {
 	db.AxshareDb.Where(&models.Axure{AxureGroupId: uint(axureGroupId)}).Order("id desc").Find(&axures)
 	c.JSON(http.StatusOK, ogs.RspOKWithPaginate(
 		ogs.BlankMessage(),
-		FormatList(axures),
+		FormatAxureList(axures),
 		ogs.NewPaginate(1, 101, 10)))
 }
 
@@ -84,4 +84,20 @@ func CreateAxure(c *gin.Context) {
 	tx.Commit()
 
 	c.JSON(http.StatusOK, ogs.RspOKWithData(ogs.SuccessMessage("创建成功！"), axure))
+}
+
+func FormatAxureList(axures []models.Axure) []map[string]interface{} {
+	var json = make([]map[string]interface{}, len(axures))
+	for i, axure := range axures {
+		var data = make(map[string]interface{})
+		data["id"] = axure.ID
+		data["name"] = axure.Name
+		data["updated_at"] = utils.FormatDateTime(axure.UpdatedAt)
+		data["is_released"] = axure.IsReleased()
+		data["web_link"] = axure.WebLink()
+		data["permanent_link"] = axure.PermanentLink()
+		data["axure_group_id"] = axure.AxureGroupId
+		json[i] = data
+	}
+	return json
 }

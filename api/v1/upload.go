@@ -1,4 +1,4 @@
-package qiniu
+package v1
 
 import (
 	"axshare_go/internal/utils"

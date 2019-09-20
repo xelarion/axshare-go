@@ -1,4 +1,4 @@
-package axure_group
+package v1
 
 import (
 	"axshare_go/internal/db"
@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func FetchList(c *gin.Context) {
+func GetAxureGroups(c *gin.Context) {
 	var axureGroups []models.AxureGroup
 	db.AxshareDb.Model(&models.AxureGroup{}).Find(&axureGroups)
 	c.JSON(http.StatusOK, ogs.RspOKWithPaginate(
