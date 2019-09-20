@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
+	"os"
 )
 
 type Attachment struct {
@@ -32,5 +33,6 @@ func (c *Attachment) WebLink() string {
 
 // 原型压缩包下载地址
 func (c *Attachment) DownloadUrl() string {
-	return ""
+	domain := os.Getenv("QINIU_BUCKET_DOMAIN")
+	return domain + "/" + c.FileHash
 }
