@@ -1,9 +1,12 @@
 package app
 
 import (
+	"axshare_go/internal/models"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/ogsapi/ogs-go"
 	"net/http"
+	"os"
 )
 
 var notAuth = []string{"/api/v1/user/login"}
@@ -46,6 +49,19 @@ func isAuthorized(tokenHeader string) bool {
 	if tokenHeader == "" {
 		return false
 	}
-	// TODO
+	tk := &models.Token{}
+
+	token, err := jwt.ParseWithClaims(tokenHeader, tk, func(token *jwt.Token) (interface{}, error) {
+		return []byte(os.Getenv("TOKEN_KEY")), nil
+	})
+
+	if err != nil {
+		return false
+	}
+
+	if !token.Valid {
+		return false
+	}
+
 	return true
 }
