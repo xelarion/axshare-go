@@ -2,7 +2,7 @@ package api
 
 import (
 	v1 "axshare_go/api/v1"
-	app "axshare_go/internal/pkg"
+	"axshare_go/internal/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"io"
@@ -17,9 +17,9 @@ func HttpServerRun() {
 	// 定义路由
 	router := gin.Default()
 
-	app.AllowRouterCors(router)
+	utils.AllowRouterCors(router)
 
-	router.Use(app.TokenAuthMiddleware())
+	router.Use(utils.TokenAuthMiddleware())
 
 	v1.RouterV1(router)
 

@@ -1,9 +1,12 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import "time"
 
 type AxureGroup struct {
-	gorm.Model
-	Name string
-	Desc string
+	ID        uint `json:"id"gorm:"primary_key"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt *time.Time `sql:"index"`
+	Name      string     `json:"name"`
+	Desc      string     `json:"desc"`
 }

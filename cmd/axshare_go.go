@@ -20,12 +20,7 @@ func main() {
 	log.Info("axshare main start")
 
 	initConfig()
-
-	// 从.env文件加载env变量
-	e := godotenv.Load()
-	if e != nil {
-		fmt.Print(e)
-	}
+	initEnv()
 
 	db.InitDbConnection("axshare_db")
 	migrate.Migrate()
@@ -33,14 +28,13 @@ func main() {
 
 	//db.AxshareDb.LogMode(true)
 
-	serverChan := make(chan int)
-
-	tasks.CronMain()
-
 	if isProductionEnv() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
+	serverChan := make(chan int)
+
+	tasks.CronMain()
 	go api.HttpServerRun()
 
 	<-serverChan
@@ -58,6 +52,14 @@ func initLogger() {
 	file, err := os.OpenFile(LogPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err == nil {
 		log.SetOutput(file)
+	}
+}
+
+func initEnv() {
+	// 从.env文件加载env变量
+	e := godotenv.Load()
+	if e != nil {
+		fmt.Print(e)
 	}
 }
 

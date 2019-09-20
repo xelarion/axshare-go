@@ -3,10 +3,10 @@ package attachment
 import (
 	"axshare_go/internal/db"
 	"axshare_go/internal/models"
+	"axshare_go/internal/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/ogsapi/ogs-go"
 	"net/http"
-	"strconv"
 )
 
 func GetAttachments(c *gin.Context) {
@@ -15,9 +15,9 @@ func GetAttachments(c *gin.Context) {
 		return
 	}
 
-	axureId, _ := strconv.ParseUint(c.Param("axure_id"), 10, 64)
+	axureId, _ := utils.ParseUint(c.Param("axure_id"))
 	var attachments []models.Attachment
-	db.AxshareDb.Debug().Model(&models.Attachment{}).Where(
+	db.AxshareDb.Model(&models.Attachment{}).Where(
 		"axure_id = ?", axureId).Order("id desc").Preload("User").Find(&attachments)
 
 	c.JSON(http.StatusOK, ogs.RspOKWithPaginate(

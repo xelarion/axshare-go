@@ -11,14 +11,6 @@ import (
 	"strings"
 )
 
-/*
-JWT claims struct
-*/
-type Token struct {
-	UserId uint
-	jwt.StandardClaims
-}
-
 //a struct to rep user account
 type Account struct {
 	gorm.Model
@@ -112,7 +104,7 @@ func (account *Account) Create() map[string]interface{} {
 
 // 生成 token
 func (account *Account) GenToken() string {
-	tk := &Token{UserId: account.ID}
+	tk := &u.Token{UserId: account.ID}
 	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
 	tokenString, _ := token.SignedString([]byte(os.Getenv("TOKEN_KEY")))
 	account.Token = tokenString

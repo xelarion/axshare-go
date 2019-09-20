@@ -13,6 +13,6 @@ func FetchList(c *gin.Context) {
 	db.AxshareDb.Model(&models.AxureGroup{}).Find(&axureGroups)
 	c.JSON(http.StatusOK, ogs.RspOKWithPaginate(
 		ogs.BlankMessage(),
-		FormatList(axureGroups),
+		axureGroups,
 		ogs.NewPaginate(1, 101, 10)))
 }

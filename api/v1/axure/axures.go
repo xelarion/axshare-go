@@ -8,7 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/ogsapi/ogs-go"
 	"net/http"
-	"strconv"
 )
 
 func GetAxures(c *gin.Context) {
@@ -17,7 +16,7 @@ func GetAxures(c *gin.Context) {
 		return
 	}
 
-	axureGroupId, _ := strconv.ParseUint(c.Param("axure_group_id"), 10, 64)
+	axureGroupId, _ := utils.ParseUint(c.Param("axure_group_id"))
 	var axures []models.Axure
 	db.AxshareDb.Where(&models.Axure{AxureGroupId: uint(axureGroupId)}).Order("id desc").Find(&axures)
 	c.JSON(http.StatusOK, ogs.RspOKWithPaginate(
@@ -32,7 +31,7 @@ func GetAxure(c *gin.Context) {
 		return
 	}
 
-	id, _ := strconv.ParseUint(c.Param("id"), 10, 64)
+	id, _ := utils.ParseUint(c.Param("id"))
 	axure := models.Axure{}
 	db.AxshareDb.First(&axure, id)
 	c.JSON(http.StatusOK, ogs.RspOKWithData(ogs.BlankMessage(), axure))
@@ -46,7 +45,7 @@ func UpdateAxure(c *gin.Context) {
 
 	tx := db.AxshareDb.Begin()
 
-	id, _ := strconv.ParseUint(c.Param("id"), 10, 64)
+	id, _ := utils.ParseUint(c.Param("id"))
 	params := utils.GetBodyParams(c).(map[string]interface{})
 
 	axure := models.Axure{}
@@ -68,7 +67,7 @@ func UpdateAxure(c *gin.Context) {
 func CreateAxure(c *gin.Context) {
 	tx := db.AxshareDb.Begin()
 
-	axureGroupId, _ := strconv.ParseUint(c.Param("axure_group_id"), 10, 64)
+	axureGroupId, _ := utils.ParseUint(c.Param("axure_group_id"))
 	params := utils.GetBodyParams(c).(map[string]interface{})
 
 	//axure := models.Axure{Name: params["name"].(string)}

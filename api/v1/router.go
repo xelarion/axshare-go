@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RouterV1 (router *gin.Engine) {
+func RouterV1(router *gin.Engine) {
 	v1 := router.Group("/api/v1")
 	{
 		v1.POST("/user/login", user.Authenticate)
