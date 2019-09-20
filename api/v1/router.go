@@ -7,9 +7,9 @@ import (
 func RouterV1(router *gin.Engine) {
 	v1 := router.Group("/api/v1")
 	{
-		v1.POST("/user/login", Authenticate)
-		v1.POST("/user/logout", DestroyAuthorization)
-		v1.GET("/user/info", GetInfo)
+		v1.POST("/user/login", Login)
+		v1.POST("/user/logout", Logout)
+		v1.GET("/user/info", GetUserInfo)
 
 		v1.GET("/axure_groups", GetAxureGroups)
 

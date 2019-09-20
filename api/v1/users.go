@@ -10,7 +10,7 @@ import (
 )
 
 // 授权登录
-func Authenticate(c *gin.Context) {
+func Login(c *gin.Context) {
 	account := &models.Account{}
 	err := json.NewDecoder(c.Request.Body).Decode(account) //decode the request body into struct and failed if any error occur
 	if err != nil {
@@ -19,12 +19,12 @@ func Authenticate(c *gin.Context) {
 		return
 	}
 
-	resp := models.Login(account.Email, account.Username, account.Password)
+	resp := models.Authenticate(account.Email, account.Username, account.Password)
 	c.JSON(http.StatusOK, resp)
 }
 
 // 销毁授权
-func DestroyAuthorization(c *gin.Context) {
+func Logout(c *gin.Context) {
 	account := models.FindAccountByToken(utils.GetHeaderToken(c))
 	err := account.DestroyToken()
 	if err != nil {
@@ -34,7 +34,7 @@ func DestroyAuthorization(c *gin.Context) {
 }
 
 // 获取用户信息
-func GetInfo(c *gin.Context) {
+func GetUserInfo(c *gin.Context) {
 	user := models.FindAccountByToken(utils.GetHeaderToken(c))
 	c.JSON(http.StatusOK, ogs.RspOKWithData(ogs.BlankMessage(), user))
 }

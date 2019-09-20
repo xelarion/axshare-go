@@ -24,7 +24,7 @@ func (Account) TableName() string {
 	return "users"
 }
 
-func Login(email, username, password string) interface{} {
+func Authenticate(email, username, password string) interface{} {
 	account := Account{}
 	err := db.AxshareDb.Where(&Account{Email: email, Username: username}).First(&account).Error
 	if err != nil {
