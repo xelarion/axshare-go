@@ -54,7 +54,7 @@ func UpdateAxure(c *gin.Context) {
 	_ = json.Unmarshal(jsonBody, &axure)
 	db.AxshareDb.Debug().Model(&axure).Updates(params)
 
-	attachment := models.Attachment{AxureId: axure.ID}
+	attachment := models.Attachment{AxureId: axure.ID, UserId: CurrentUserId(c)}
 	jsonBody1, _ := json.Marshal(params["attachment"])
 	_ = json.Unmarshal(jsonBody1, &attachment)
 	db.AxshareDb.Debug().Create(&attachment)
@@ -76,7 +76,7 @@ func CreateAxure(c *gin.Context) {
 	_ = json.Unmarshal(jsonBody1, &axure)
 	db.AxshareDb.Debug().Create(&axure)
 
-	attachment := models.Attachment{AxureId: axure.ID}
+	attachment := models.Attachment{AxureId: axure.ID, UserId: CurrentUserId(c)}
 	jsonBody, _ := json.Marshal(params["attachment"])
 	_ = json.Unmarshal(jsonBody, &attachment)
 	db.AxshareDb.Debug().Create(&attachment)

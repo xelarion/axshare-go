@@ -2,7 +2,6 @@ package v1
 
 import (
 	"axshare_go/internal/models"
-	"axshare_go/internal/utils"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/ogsapi/ogs-go"
@@ -25,7 +24,7 @@ func Login(c *gin.Context) {
 
 // 销毁授权
 func Logout(c *gin.Context) {
-	account := models.FindAccountByToken(utils.GetHeaderToken(c))
+	account := CurrentAccount(c)
 	err := account.DestroyToken()
 	if err != nil {
 		c.JSON(http.StatusOK, ogs.RspOK(ogs.ErrorMessage("操作失败！")))
@@ -35,6 +34,6 @@ func Logout(c *gin.Context) {
 
 // 获取用户信息
 func GetUserInfo(c *gin.Context) {
-	user := models.FindAccountByToken(utils.GetHeaderToken(c))
+	user := CurrentUser(c)
 	c.JSON(http.StatusOK, ogs.RspOKWithData(ogs.BlankMessage(), user))
 }

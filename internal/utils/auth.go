@@ -13,7 +13,7 @@ var notAuth = []string{"/api/v1/user/login"}
 /*
 JWT claims struct
 */
-type Token struct {
+type TokenClaims struct {
 	UserId uint
 	jwt.StandardClaims
 }
@@ -24,14 +24,12 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 		requestPath := c.Request.URL.Path
 
 		// 无需验证权限
-		if authorizationNotRequired(requestPath) {
+		if isAuthorizationNotRequired(requestPath) {
 			c.Next()
 			return
 		}
 
-		tokenHeader := c.GetHeader("Authorization") //Grab the token from the header
-
-		if !isAuthorized(tokenHeader) {
+		if !isAuthorized(c) {
 			response := ogs.RspBase(ogs.StatusInvalidToken, ogs.ErrorMessage("Invalid Token"))
 			c.AbortWithStatusJSON(http.StatusOK, response)
 			return
@@ -41,8 +39,16 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 	}
 }
 
+func GetUserIdByToken(tokenString string) (userId uint, err error) {
+	tokenClaims := &TokenClaims{}
+	_, err = jwt.ParseWithClaims(tokenString, tokenClaims, tokenSecretKeyFunc())
+
+	userId = tokenClaims.UserId
+	return userId, err
+}
+
 // 无需验证权限
-func authorizationNotRequired(requestPath string) bool {
+func isAuthorizationNotRequired(requestPath string) bool {
 	for _, value := range notAuth {
 		if value == requestPath {
 			return true
@@ -52,15 +58,9 @@ func authorizationNotRequired(requestPath string) bool {
 }
 
 // token 是否有效
-func isAuthorized(tokenHeader string) bool {
-	if tokenHeader == "" {
-		return false
-	}
-	tk := &Token{}
-
-	token, err := jwt.ParseWithClaims(tokenHeader, tk, func(token *jwt.Token) (interface{}, error) {
-		return []byte(os.Getenv("TOKEN_KEY")), nil
-	})
+func isAuthorized(c *gin.Context) bool {
+	headerToken := GetHeaderToken(c)
+	token, err := getParseToken(headerToken)
 
 	if err != nil {
 		return false
@@ -71,4 +71,15 @@ func isAuthorized(tokenHeader string) bool {
 	}
 
 	return true
+}
+
+func tokenSecretKeyFunc() jwt.Keyfunc {
+	return func(token *jwt.Token) (interface{}, error) {
+		return []byte(os.Getenv("TOKEN_KEY")), nil
+	}
+}
+
+func getParseToken(tokenString string) (*jwt.Token, error) {
+	token, err := jwt.Parse(tokenString, tokenSecretKeyFunc())
+	return token, err
 }

@@ -2,7 +2,7 @@ package models
 
 import (
 	"axshare_go/internal/db"
-	u "axshare_go/internal/utils"
+	"axshare_go/internal/utils"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/jinzhu/gorm"
 	"github.com/ogsapi/ogs-go"
@@ -55,11 +55,11 @@ func Authenticate(email, username, password string) interface{} {
 func (account *Account) Validate() (map[string]interface{}, bool) {
 
 	if !strings.Contains(account.Email, "@") {
-		return u.Message(false, "Email address is required"), false
+		return utils.Message(false, "Email address is required"), false
 	}
 
 	if len(account.Password) < 6 {
-		return u.Message(false, "Password is required"), false
+		return utils.Message(false, "Password is required"), false
 	}
 
 	//Email must be unique
@@ -68,13 +68,13 @@ func (account *Account) Validate() (map[string]interface{}, bool) {
 	//check for errors and duplicate emails
 	err := db.AxshareDb.Model(&Account{}).Where("email = ?", account.Email).First(temp).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return u.Message(false, "Connection error. Please retry"), false
+		return utils.Message(false, "Connection error. Please retry"), false
 	}
 	if temp.Email != "" {
-		return u.Message(false, "Email address already in use by another user."), false
+		return utils.Message(false, "Email address already in use by another user."), false
 	}
 
-	return u.Message(false, "Requirement passed"), true
+	return utils.Message(false, "Requirement passed"), true
 }
 
 func (account *Account) Create() map[string]interface{} {
@@ -89,7 +89,7 @@ func (account *Account) Create() map[string]interface{} {
 	db.AxshareDb.Create(account)
 
 	if account.ID <= 0 {
-		return u.Message(false, "Failed to create account, connection error.")
+		return utils.Message(false, "Failed to create account, connection error.")
 	}
 
 	//Create new JWT token for the newly registered account
@@ -97,14 +97,14 @@ func (account *Account) Create() map[string]interface{} {
 
 	account.Password = "" //delete password
 
-	response := u.Message(true, "Account has been created")
+	response := utils.Message(true, "Account has been created")
 	response["account"] = account
 	return response
 }
 
 // 生成 token
 func (account *Account) GenToken() string {
-	tk := &u.Token{UserId: account.ID}
+	tk := &utils.TokenClaims{UserId: account.ID}
 	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
 	tokenString, _ := token.SignedString([]byte(os.Getenv("TOKEN_KEY")))
 	account.Token = tokenString
@@ -116,9 +116,3 @@ func (account *Account) DestroyToken() error {
 	return nil
 }
 
-func FindAccountByToken(token string) Account {
-	account := Account{}
-	// todo
-	db.AxshareDb.First(&account)
-	return account
-}

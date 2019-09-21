@@ -1,7 +1,6 @@
 package api
 
 import (
-	v1 "axshare_go/api/v1"
 	"axshare_go/internal/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -21,7 +20,7 @@ func HttpServerRun() {
 
 	router.Use(utils.TokenAuthMiddleware())
 
-	v1.RouterV1(router)
+	SetV1Router(router)
 
 	port := viper.GetString("http.port")
 	_ = router.Run(":" + port)

@@ -6,7 +6,7 @@ import (
 )
 
 func GetHeaderToken(c *gin.Context) string {
-	return c.Request.Header.Get("Authorization")
+	return c.GetHeader("Authorization")
 }
 
 func GetBodyParams(c *gin.Context) interface{} {
