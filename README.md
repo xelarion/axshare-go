@@ -1,3 +1,8 @@
+Init env software
+
+    chmod +x scripts/init_env.sh
+    ./scripts/init_env.sh
+
 Dockerize axshare-vue
 
      chmod +x deployments/docker.sh

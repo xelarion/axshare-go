@@ -13,5 +13,6 @@ http:
 
 #axure web host
 web_host: https://axure.vicw.com
+axure_path: ~/web/axure/
 # admin host
 admin_host: https://www.vicw.com

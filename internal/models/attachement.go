@@ -1,9 +1,13 @@
 package models
 
 import (
+	"axshare_go/internal/db"
+	tasks "axshare_go/internal/task"
+	"axshare_go/internal/utils"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
 	"os"
+	"strings"
 )
 
 type Attachment struct {
@@ -14,6 +18,34 @@ type Attachment struct {
 	AxureId  uint   `json:"axure_id" gorm:"index" xml:"axure_id" binding:"required"`
 	UserId   uint   `gorm:"index" json:"user_id"`
 	User     User   `json:"user"`
+}
+
+func ReleaseFile(attachmentId uint) {
+	tx := db.AxshareDb.Begin()
+
+	axure := Axure{}
+	attachment := Attachment{}
+	db.AxshareDb.Debug().First(&attachment, attachmentId)
+	db.AxshareDb.Debug().Model(&attachment).Related(&axure)
+
+	webLink := tasks.DeployAxure(attachment.DownloadUrl(), attachment.genFileName())
+
+	db.AxshareDb.Debug().Model(&axure).Update("link", webLink)
+	db.AxshareDb.Debug().Model(&attachment).Update("link", webLink)
+	tx.Commit()
+}
+
+func (c *Attachment) genFileName() string {
+	axure := Axure{}
+	db.AxshareDb.Debug().Model(&c).Related(&axure)
+
+	fileName := strings.Join([]string{
+		utils.FormatUint(axure.AxureGroupId),
+		utils.StrftimeDateTime(c.CreatedAt, "20060102150405"),
+		c.FileHash,
+	}, "_")
+
+	return fileName
 }
 
 // 文件是否解压

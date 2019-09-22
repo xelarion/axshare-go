@@ -60,6 +60,7 @@ func UpdateAxure(c *gin.Context) {
 	db.AxshareDb.Debug().Create(&attachment)
 
 	tx.Commit()
+	models.ReleaseFile(attachment.ID)
 
 	c.JSON(http.StatusOK, ogs.RspOKWithData(ogs.BlankMessage(), axure))
 }
@@ -82,6 +83,7 @@ func CreateAxure(c *gin.Context) {
 	db.AxshareDb.Debug().Create(&attachment)
 
 	tx.Commit()
+	models.ReleaseFile(attachment.ID)
 
 	c.JSON(http.StatusOK, ogs.RspOKWithData(ogs.SuccessMessage("创建成功！"), axure))
 }

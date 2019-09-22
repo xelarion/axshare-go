@@ -46,8 +46,7 @@ func FormatDateTimeMonth(dateTime time.Time) string {
 	}
 }
 
-//获取UTC时间
-func GetUTCtimeString() string {
-	timeLayout := "2006-01-02 15:04:05"
-	return time.Now().UTC().Format(timeLayout)
+func StrftimeDateTime(dateTime time.Time, timeFormat string) string {
+	loc, _ := time.LoadLocation("Asia/Shanghai")
+	return dateTime.In(loc).Format(timeFormat)
 }
