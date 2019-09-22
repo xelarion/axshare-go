@@ -1,14 +1,19 @@
 package utils
 
 import (
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/ogsapi/ogs-go"
 	"net/http"
 	"os"
+	"regexp"
 )
 
-var notAuth = []string{"/api/v1/user/login"}
+var notAuthPattern = []string{
+	`/api/v1/user/login`,
+	`^/api/v1/axures/.*\d`,
+}
 
 /*
 JWT claims struct
@@ -49,8 +54,14 @@ func GetUserIdByToken(tokenString string) (userId uint, err error) {
 
 // 无需验证权限
 func isAuthorizationNotRequired(requestPath string) bool {
-	for _, value := range notAuth {
-		if value == requestPath {
+	for _, pattern := range notAuthPattern {
+		// 这里循环匹配 requestPath，先添加的先匹配
+		reg, err := regexp.Compile(pattern)
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		if reg.MatchString(requestPath) {
 			return true
 		}
 	}

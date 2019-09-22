@@ -37,6 +37,24 @@ func GetAxure(c *gin.Context) {
 	c.JSON(http.StatusOK, ogs.RspOKWithData(ogs.BlankMessage(), axure))
 }
 
+func GetAxureWebInfo(c *gin.Context) {
+	if c.Param("id") == "" {
+		c.JSON(http.StatusNotFound, nil)
+		return
+	}
+
+	id, _ := utils.ParseUint(c.Param("id"))
+	axure := models.Axure{}
+	db.AxshareDb.First(&axure, id)
+
+	if c.Query("key") != axure.SecretKey {
+		c.JSON(http.StatusNotFound, nil)
+		return
+	}
+
+	c.JSON(http.StatusOK, ogs.RspOKWithData(ogs.BlankMessage(), axure.WebLink()))
+}
+
 func UpdateAxure(c *gin.Context) {
 	if c.Param("id") == "" {
 		c.JSON(http.StatusNotFound, nil)

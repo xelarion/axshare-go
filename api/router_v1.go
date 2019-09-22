@@ -8,6 +8,8 @@ import (
 func SetV1Router(router *gin.Engine) {
 	r := router.Group("/api/v1")
 	{
+		r.GET("/axures/:id", v1.GetAxureWebInfo)
+
 		r.POST("/user/login", v1.Login)
 		r.POST("/user/logout", v1.Logout)
 		r.GET("/user/info", v1.GetUserInfo)
