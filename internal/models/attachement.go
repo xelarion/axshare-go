@@ -25,19 +25,19 @@ func ReleaseFile(attachmentId uint) {
 
 	axure := Axure{}
 	attachment := Attachment{}
-	db.AxshareDb.Debug().First(&attachment, attachmentId)
-	db.AxshareDb.Debug().Model(&attachment).Related(&axure)
+	db.AxshareDb.First(&attachment, attachmentId)
+	db.AxshareDb.Model(&attachment).Related(&axure)
 
 	webLink := tasks.DeployAxure(attachment.DownloadUrl(), attachment.genFileName())
 
-	db.AxshareDb.Debug().Model(&axure).Update("link", webLink)
-	db.AxshareDb.Debug().Model(&attachment).Update("link", webLink)
+	db.AxshareDb.Model(&axure).Update("link", webLink)
+	db.AxshareDb.Model(&attachment).Update("link", webLink)
 	tx.Commit()
 }
 
 func (c *Attachment) genFileName() string {
 	axure := Axure{}
-	db.AxshareDb.Debug().Model(&c).Related(&axure)
+	db.AxshareDb.Model(&c).Related(&axure)
 
 	fileName := strings.Join([]string{
 		utils.FormatUint(axure.AxureGroupId),
