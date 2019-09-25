@@ -22,15 +22,9 @@ type Attachment struct {
 
 func ReleaseFile(attachmentId uint) {
 	tx := db.AxshareDb.Begin()
-
-	axure := Axure{}
 	attachment := Attachment{}
 	db.AxshareDb.First(&attachment, attachmentId)
-	db.AxshareDb.Model(&attachment).Related(&axure)
-
 	webLink := tasks.DeployAxure(attachment.DownloadUrl(), attachment.genFileName())
-
-	db.AxshareDb.Model(&axure).Update("link", webLink)
 	db.AxshareDb.Model(&attachment).Update("link", webLink)
 	tx.Commit()
 }
