@@ -12,7 +12,6 @@ import (
 type Axure struct {
 	gorm.Model
 	Name         string       `json:"name" xml:"name" binding:"required"`
-	Link         string       `json:"link"`
 	SecretKey    string       `json:"secret_key" binding:"required"`
 	AxureGroupId uint         `gorm:"index"json:"axure_group_id"`
 	Attachments  []Attachment `json:"attachments"`
@@ -25,11 +24,8 @@ func (c *Axure) BeforeCreate() (err error) {
 
 // 原型静态web链接
 func (c *Axure) WebLink() string {
-	if !c.IsReleased() {
-		return ""
-	}
-	webHost := viper.GetString("web_host")
-	return webHost + c.Link
+	attachment := c.LatestAttachment()
+	return attachment.WebLink()
 }
 
 // 原型永久地址
@@ -42,8 +38,8 @@ func (c *Axure) PermanentLink() string {
 
 // 文件是否解压
 func (c *Axure) IsReleased() bool {
-	isReleased := len(c.Link) > 0
-	return isReleased
+	attachment := c.LatestAttachment()
+	return attachment.IsReleased()
 }
 
 func (c *Axure) LatestAttachment() Attachment {
