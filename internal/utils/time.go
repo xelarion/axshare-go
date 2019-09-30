@@ -46,7 +46,7 @@ func FormatDateTimeMonth(dateTime time.Time) string {
 	}
 }
 
-func StrftimeDateTime(dateTime time.Time, timeFormat string) string {
+func Strftime(dateTime time.Time, layout string) string {
 	loc, _ := time.LoadLocation("Asia/Shanghai")
-	return dateTime.In(loc).Format(timeFormat)
+	return dateTime.In(loc).Format(layout)
 }

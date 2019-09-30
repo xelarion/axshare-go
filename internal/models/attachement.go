@@ -35,7 +35,7 @@ func (c *Attachment) genFileName() string {
 
 	fileName := strings.Join([]string{
 		utils.FormatUint(axure.AxureGroupId),
-		utils.StrftimeDateTime(c.CreatedAt, "20060102150405"),
+		utils.Strftime(c.CreatedAt, "20060102150405"),
 		c.FileHash,
 	}, "_")
 
