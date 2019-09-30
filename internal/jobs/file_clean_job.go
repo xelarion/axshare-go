@@ -1,4 +1,4 @@
-package tasks
+package jobs
 
 func CleanOldFiles() {
 	// todo do somethings

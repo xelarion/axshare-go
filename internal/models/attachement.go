@@ -2,7 +2,7 @@ package models
 
 import (
 	"axshare_go/internal/db"
-	tasks "axshare_go/internal/task"
+	"axshare_go/internal/jobs"
 	"axshare_go/internal/utils"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
@@ -24,7 +24,7 @@ func ReleaseFile(attachmentId uint) {
 	tx := db.AxshareDb.Begin()
 	attachment := Attachment{}
 	db.AxshareDb.First(&attachment, attachmentId)
-	webLink := tasks.DeployAxure(attachment.DownloadUrl(), attachment.genFileName())
+	webLink := jobs.DeployAxure(attachment.DownloadUrl(), attachment.genFileName())
 	db.AxshareDb.Model(&attachment).Update("link", webLink)
 	tx.Commit()
 }

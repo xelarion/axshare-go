@@ -4,66 +4,44 @@ import (
 	"axshare_go/api"
 	"axshare_go/internal/db"
 	"axshare_go/internal/db/migrate"
-	tasks "axshare_go/internal/task"
-	"fmt"
+	"axshare_go/internal/jobs"
+	"axshare_go/internal/task"
+	"axshare_go/internal/utils"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
-	log "github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
-	"os"
 )
-
-const LogPath = "log/axshare_go.log"
 
 func main() {
 	initLogger()
-	log.Info("axshare main start")
-
-	initConfig()
-	initEnv()
-
-	db.InitDbConnection("axshare_db")
-	migrate.Migrate()
-	migrate.Seed()
-
-	//db.AxshareDb.LogMode(true)
-
-	if isProductionEnv() {
-		gin.SetMode(gin.ReleaseMode)
-	}
+	initConfigEnv()
+	initDB()
+	initGinSetting()
 
 	serverChan := make(chan int)
 
-	tasks.CronMain()
-	go api.HttpServerRun()
+	jobs.CronMain()
+	go api.RunHttpServer()
+	go task.RunMachineryServer()
 
 	<-serverChan
 }
 
-func initConfig() {
-	viper.AddConfigPath("configs")
-	err := viper.ReadInConfig()
-	if err != nil {
-		panic(fmt.Errorf("Fatal error config file: %s \n", err))
-	}
-}
-
 func initLogger() {
-	file, err := os.OpenFile(LogPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
-	if err == nil {
-		log.SetOutput(file)
-	}
+	utils.InitLogger()
 }
 
-func initEnv() {
-	// 从.env文件加载env变量
-	e := godotenv.Load()
-	if e != nil {
-		fmt.Print(e)
-	}
+func initConfigEnv() {
+	utils.InitEnv()
+	utils.InitConfig()
 }
 
-func isProductionEnv() bool {
-	env := viper.GetString("env")
-	return env == "production"
+func initDB() {
+	db.InitDbConnection("axshare_db")
+	migrate.Migrate()
+	migrate.Seed()
+}
+
+func initGinSetting() {
+	if utils.IsProductionEnv() {
+		gin.SetMode(gin.ReleaseMode)
+	}
 }
