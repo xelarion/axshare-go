@@ -9,18 +9,10 @@ import (
 
 var MachineryServer *machinery.Server
 
+const configPath = "configs/machinery_config.yaml"
+
 func startMachineryServer() (*machinery.Server, error) {
-	var cnf = &config.Config{
-		Broker:        "amqp://guest:guest@localhost:5672/",
-		DefaultQueue:  "machinery_tasks",
-		ResultBackend: "redis://127.0.0.1:6379",
-		AMQP: &config.AMQPConfig{
-			Exchange:      "machinery_exchange",
-			ExchangeType:  "direct",
-			BindingKey:    "machinery_task",
-			PrefetchCount: 3,
-		},
-	}
+	cnf, err := config.NewFromYaml(configPath, true)
 
 	//init server
 	server, err := machinery.NewServer(cnf)

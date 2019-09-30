@@ -19,7 +19,7 @@ func GetAxureGroups(c *gin.Context) {
 		ogs.NewPaginate(1, 101, 10)))
 }
 
-func testMechineryTask() {
+func testMachineryTask() {
 	var addTask0 tasks.Signature
 	addTask0 = tasks.Signature{
 		Name: "add",
