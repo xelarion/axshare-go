@@ -35,7 +35,7 @@ func initConfigEnv() {
 }
 
 func initDB() {
-	db.InitDbConnection("axshare_db")
+	db.InitDbConnection()
 	migrate.Migrate()
 	migrate.Seed()
 }

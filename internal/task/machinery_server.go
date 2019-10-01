@@ -5,14 +5,23 @@ import (
 	"github.com/RichardKnop/machinery/v1"
 	"github.com/RichardKnop/machinery/v1/config"
 	"github.com/RichardKnop/machinery/v1/tasks"
+	"os"
 )
 
 var MachineryServer *machinery.Server
 
-const configPath = "configs/machinery_config.yaml"
-
 func startMachineryServer() (*machinery.Server, error) {
-	cnf, err := config.NewFromYaml(configPath, true)
+	var cnf = &config.Config{
+		Broker:        os.Getenv("MACHINERY_BROKER"),
+		DefaultQueue:  "machinery_tasks",
+		ResultBackend: os.Getenv("MACHINERY_RESULT_BACKEND"),
+		AMQP: &config.AMQPConfig{
+			Exchange:      "machinery_exchange",
+			ExchangeType:  "direct",
+			BindingKey:    "machinery_task",
+			PrefetchCount: 3,
+		},
+	}
 
 	//init server
 	server, err := machinery.NewServer(cnf)

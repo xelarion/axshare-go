@@ -10,9 +10,9 @@ Dockerize axshare-vue
      
     // or run following
     // build app
-    docker build -t ervincheung/axshare_go .
+    docker build -t ervincheung/axshare-go .
     // run single app
-    docker run -d -p 10524:10524 --rm --name dockerize-axshare_go ervincheung/axshare_go
+    docker run -d -p 10524:10524 --rm --name dockerize-axshare_go ervincheung/axshare-go
 ***
 
 **api/**

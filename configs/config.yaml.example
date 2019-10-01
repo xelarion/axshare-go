@@ -1,11 +1,3 @@
-# 数据库配置信息
-axshare_db:
-  host: db_mysql
-  port: 3306
-  database: axshare
-  user: ervincheung
-  password: 1qaz2wsx
-
 env: production
 
 http:

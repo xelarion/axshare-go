@@ -1,30 +1,39 @@
 version: '3.3'
 services:
-  db_mysql:
+  axshare_go:
+    container_name: axshare_go
+    image: ervincheung/axshare-go
+    restart: always
+    depends_on:
+      - mysql
+      - redis
+    links:
+      - mysql
+      - redis
+    env_file:
+      - .docker.axshare.env
+      - .docker.mysql.env
+    ports:
+      - 10524:10524
+    volumes:
+      - /docker/data/axshare-go:/axshare-go
+
+  mysql:
+    container_name: axshare_go_mysql
     image: mysql:5.7
     restart: always
-    environment:
-      MYSQL_DATABASE: 'axshare'
-      # So you don't have to use root, but you can if you like
-      MYSQL_USER: 'ervincheung'
-      # You can use whatever password you like
-      MYSQL_PASSWORD: '1qaz2wsx'
-      # Password for root access
-      MYSQL_ROOT_PASSWORD: '1qaz2wsx'
+    env_file:
+      - .docker.mysql.env
     ports:
       # <Port exposed> : < MySQL Port running inside container>
       - '3308:3306'
     expose:
       # Opens port 3306 on the container
       - '3306'
-      # Where our data will be persisted
     volumes:
+      # Where our data will be persisted
       - /docker/data/mysql:/var/lib/mysql
 
-  docker_axshare_go:
-    restart: always
-    image: ervincheung/axshare_go
-    depends_on:
-      - db_mysql
-    ports:
-      - 10524:10524
+  redis:
+    container_name: axshare_go_redis
+    image: redis
