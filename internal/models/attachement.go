@@ -2,7 +2,6 @@ package models
 
 import (
 	"axshare_go/internal/db"
-	"axshare_go/internal/jobs"
 	"axshare_go/internal/utils"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
@@ -20,16 +19,7 @@ type Attachment struct {
 	User     User   `json:"user"`
 }
 
-func ReleaseFile(attachmentId uint) {
-	tx := db.AxshareDb.Begin()
-	attachment := Attachment{}
-	db.AxshareDb.First(&attachment, attachmentId)
-	webLink := jobs.DeployAxure(attachment.DownloadUrl(), attachment.genFileName())
-	db.AxshareDb.Model(&attachment).Update("link", webLink)
-	tx.Commit()
-}
-
-func (c *Attachment) genFileName() string {
+func (c *Attachment) GenFileName() string {
 	axure := Axure{}
 	db.AxshareDb.Model(&c).Related(&axure)
 

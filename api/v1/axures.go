@@ -3,8 +3,10 @@ package v1
 import (
 	"axshare_go/internal/db"
 	"axshare_go/internal/models"
+	"axshare_go/internal/task"
 	"axshare_go/internal/utils"
 	"encoding/json"
+	"github.com/RichardKnop/machinery/v1/tasks"
 	"github.com/gin-gonic/gin"
 	"github.com/ogsapi/ogs-go"
 	"net/http"
@@ -78,7 +80,7 @@ func UpdateAxure(c *gin.Context) {
 	db.AxshareDb.Create(&attachment)
 
 	tx.Commit()
-	models.ReleaseFile(attachment.ID)
+	releaseAttachment(attachment.ID)
 
 	c.JSON(http.StatusOK, ogs.RspOKWithData(ogs.BlankMessage(), axure))
 }
@@ -101,7 +103,7 @@ func CreateAxure(c *gin.Context) {
 	db.AxshareDb.Create(&attachment)
 
 	tx.Commit()
-	models.ReleaseFile(attachment.ID)
+	releaseAttachment(attachment.ID)
 
 	c.JSON(http.StatusOK, ogs.RspOKWithData(ogs.SuccessMessage("创建成功！"), axure))
 }
@@ -120,4 +122,17 @@ func FormatAxureList(axures []models.Axure) []map[string]interface{} {
 		json[i] = data
 	}
 	return json
+}
+
+func releaseAttachment(attachmentId uint) {
+	newTask := tasks.Signature{
+		Name: "release_attachment",
+		Args: []tasks.Arg{
+			{
+				Type:  "uint",
+				Value: attachmentId,
+			},
+		},
+	}
+	_ = task.Send(&newTask)
 }

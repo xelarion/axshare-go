@@ -1,4 +1,4 @@
-package jobs
+package task
 
 import (
 	"axshare_go/internal/utils"
@@ -7,17 +7,17 @@ import (
 	"strings"
 )
 
-var AxurePath string
+var axurePath string
 
-func DeployAxure(url string, fileName string) (webLink string) {
+func deployAxure(url string, fileName string) (webLink string) {
 	checkDirExist()
 	webLink = download(url, fileName)
 	return webLink
 }
 
 func checkDirExist() {
-	AxurePath, _ = utils.ExpandPath(viper.GetString("axure_path"))
-	utils.MkdirPath(AxurePath)
+	axurePath, _ = utils.ExpandPath(viper.GetString("axure_path"))
+	utils.MkdirPath(axurePath)
 }
 
 func download(url string, fileName string) (webLink string) {
@@ -32,12 +32,12 @@ func download(url string, fileName string) (webLink string) {
 	if err != nil || indexHtmlPath == nil {
 		return ""
 	}
-	webLink = strings.ReplaceAll(indexHtmlPath[0], AxurePath, "")
+	webLink = strings.ReplaceAll(indexHtmlPath[0], axurePath, "")
 	return webLink
 }
 
 func genAxureFileDir(fileName string) string {
-	fileDir := filepath.Join(AxurePath, fileName)
+	fileDir := filepath.Join(axurePath, fileName)
 	utils.MkdirPath(fileDir)
 	return fileDir
 }

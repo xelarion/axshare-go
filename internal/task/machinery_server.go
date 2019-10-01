@@ -20,34 +20,31 @@ func startMachineryServer() (*machinery.Server, error) {
 		panic(err)
 	}
 
-	// Register tasks
-	tasks := map[string]interface{}{
-		"add":         Add,
-		"hello_world": HelloWorld,
-	}
-
-	err = server.RegisterTasks(tasks)
+	err = server.RegisterTasks(registerTasks)
 
 	return server, err
 }
 
-func RunMachineryServer() error {
+func RunMachineryServer() {
 	consumerTag := "machinery_worker"
 
 	server, err := startMachineryServer()
 	if err != nil {
-		return err
+		panic(err)
 	}
 	MachineryServer = server
 
 	worker := server.NewWorker(consumerTag, 0)
-	return worker.Launch()
+	err = worker.Launch()
+	if err != nil {
+		panic(err)
+	}
 }
 
 func Send(taskSignature *tasks.Signature) error {
 	_, err := MachineryServer.SendTask(taskSignature)
 	if err != nil {
-		return fmt.Errorf("Could not send task: %s", err.Error())
+		panic(fmt.Errorf("Could not send task: %s \n", err.Error()))
 	}
 	return nil
 }
