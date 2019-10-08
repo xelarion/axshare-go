@@ -1,6 +1,6 @@
 *.idea
 log/*
-configs/*.yaml
+config/*.yaml
 axshare_go
 
 !/log/.keep
