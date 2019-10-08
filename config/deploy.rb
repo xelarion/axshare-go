@@ -47,10 +47,15 @@ set :keep_releases, 3
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
 
+after 'deploy:finishing', :docker_up
+
 namespace :deploy do
-  before :starting, :ensure_user do
-    run_locally do
-        # execute "sudo apt-get update"
+  task :docker_up do
+    on roles(:web) do
+      within release_path do
+        execute :chmod, '+x docker.sh'
+        execute './docker.sh'
+      end
     end
   end
 end

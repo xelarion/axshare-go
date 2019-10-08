@@ -5,8 +5,8 @@ Init env software
 
 Dockerize axshare-vue
 
-     chmod +x deployments/docker.sh
-     ./deployments/docker.sh
+     chmod +x docker.sh
+     ./docker.sh
      
     // or run following
     // build app
