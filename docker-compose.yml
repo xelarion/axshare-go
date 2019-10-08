@@ -11,8 +11,8 @@ services:
       - mysql
       - redis
     env_file:
-      - .docker.axshare.env
-      - .docker.mysql.env
+      - .axshare.env
+      - .mysql.env
     ports:
       - 10524:10524
     volumes:
@@ -23,7 +23,7 @@ services:
     image: mysql:5.7
     restart: always
     env_file:
-      - .docker.mysql.env
+      - .mysql.env
     ports:
       # <Port exposed> : < MySQL Port running inside container>
       - '3308:3306'
