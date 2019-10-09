@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 docker build -t ervincheung/axshare-go .
-docker-compose up -d
+docker-compose up --detach --build
