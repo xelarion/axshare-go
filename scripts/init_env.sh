@@ -22,6 +22,7 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io -y
 apt-cache madison docker-ce
 sudo apt-get install docker-ce=5:19.03.2~3-0~ubuntu-bionic docker-ce-cli=5:19.03.2~3-0~ubuntu-bionic containerd.io -y
 sudo docker -v
+# 此bash要退出ssh重新登录才生效
 sudo usermod -aG docker "$USER"
 
 # install unar
