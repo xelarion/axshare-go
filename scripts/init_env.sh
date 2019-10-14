@@ -21,7 +21,8 @@ sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io -y
 apt-cache madison docker-ce
 sudo apt-get install docker-ce=5:19.03.2~3-0~ubuntu-bionic docker-ce-cli=5:19.03.2~3-0~ubuntu-bionic containerd.io -y
-sudo docker run hello-world
+sudo docker -v
+sudo usermod -aG docker "$USER"
 
 # install unar
 #sudo apt-get install unar -y
