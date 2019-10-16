@@ -1,0 +1,5 @@
+*.idea
+log/*
+config/*.yaml.example
+!.env
+axshare_go
