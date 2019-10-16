@@ -16,7 +16,7 @@ services:
     ports:
       - 10524:10524
     volumes:
-      - /docker/data/axshare-go:/axshare-go
+      - /docker/data/axshare-go/log:/app/log
 
   mysql:
     container_name: axshare_go_mysql

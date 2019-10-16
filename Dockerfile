@@ -1,7 +1,7 @@
 # Dockerfile References: https://docs.docker.com/engine/reference/builder/
 
 # Start from the latest golang base image
-FROM golang:latest
+FROM golang:latest as builder
 
 # Add Maintainer Info
 LABEL maintainer="ErvinCheung <1390838101@qq.com>"
@@ -13,7 +13,7 @@ WORKDIR /app
 COPY go.mod go.sum ./
 
 # proxy
-ENV GOPROXY="https://goproxy.io"
+ENV GOPROXY=https://goproxy.io
 
 # Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
 RUN go mod download
@@ -22,10 +22,32 @@ RUN go mod download
 COPY . .
 
 # Build the Go app
-RUN  go build -o axshare_go_app cmd/axshare_go.go
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main cmd/axshare_go.go
+
+######## Start a new stage from scratch #######
+FROM alpine:latest
+
+RUN apk --no-cache add ca-certificates
+
+WORKDIR /root/
+
+# Build Args
+ARG LOG_DIR=/app/log
+
+# Create Log Directory
+RUN mkdir -p ${LOG_DIR}
+
+# Environment Variables
+ENV LOG_FILE_LOCATION=${LOG_DIR}/axshare_go.log
+
+# Copy the Pre-built binary file from the previous stage
+COPY --from=builder /app/main .
+
+# Declare volumes to mount
+VOLUME [${LOG_DIR}]
 
 # Expose port 10524 to the outside world
 EXPOSE 10524
 
 # Command to run the executable
-CMD ["./axshare_go_app"]
+CMD ["./main"]
