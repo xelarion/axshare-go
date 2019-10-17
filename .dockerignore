@@ -1,5 +1,10 @@
 *.idea
 log/*
-config/*.yaml.example
-!.env
+config/*
+scripts/*
+.gitignore
+Capfile
+docker.sh
+docker-compose.yml
+README.md
 axshare_go
