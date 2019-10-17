@@ -7,7 +7,7 @@ import (
 
 func InitEnv() {
 	// 从.env文件加载env变量
-	err := godotenv.Load("production.env", "axshare.env", "mysql.env")
+	err := godotenv.Load("config/production.env", "config/axshare.env", "config/mysql.env")
 	if err != nil {
 		panic(err)
 	}
