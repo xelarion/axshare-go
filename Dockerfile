@@ -31,27 +31,8 @@ RUN apk --no-cache add ca-certificates
 
 WORKDIR /root/
 
-# Build Args
-#ARG LOG_DIR=/app/log
-
-# Create Log Directory
-#RUN mkdir -p ${LOG_DIR}
-
-RUN touch /root/production.env
-RUN touch /root/axshare.env
-RUN touch /root/mysql.env
-RUN mkdir -p /root/config
-RUN touch /root/config/config.yaml
-
-
-# Environment Variables
-#ENV LOG_FILE_LOCATION=${LOG_DIR}/axshare_go.log
-
 # Copy the Pre-built binary file from the previous stage
 COPY --from=builder /app/main .
-
-# Declare volumes to mount
-#VOLUME [${LOG_DIR}]
 
 # Expose port 10524 to the outside world
 EXPOSE 10524
