@@ -29,6 +29,9 @@ FROM alpine:latest
 
 RUN apk --no-cache add ca-certificates
 
+# 时区数据库
+RUN apk add --no-cache tzdata
+
 WORKDIR /root/
 
 # Copy the Pre-built binary file from the previous stage
