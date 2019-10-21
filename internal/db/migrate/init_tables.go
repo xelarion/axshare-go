@@ -3,11 +3,11 @@ package migrate
 import (
 	"axshare_go/internal/db"
 	"axshare_go/internal/models"
-	"fmt"
+	"github.com/sirupsen/logrus"
 )
 
 func Migrate() {
-	fmt.Println("migrate ...")
+	logrus.Info("migrate ...")
 	db.AxshareDb.Set("gorm:table_options", "CHARSET=utf8mb4").Debug().AutoMigrate(
 		&models.User{},
 		&models.AxureGroup{},

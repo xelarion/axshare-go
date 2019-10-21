@@ -8,10 +8,12 @@ import (
 	"axshare_go/internal/task"
 	"axshare_go/internal/utils"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
 	initLogger()
+	logrus.Info("axshare main start")
 	initConfigEnv()
 	initDB()
 	initGinSetting()
