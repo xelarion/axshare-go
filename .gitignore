@@ -1,6 +1,7 @@
 *.idea
 log/*
 config/*.yaml
+config/*.env
 axshare_go
 
 !/log/.keep
