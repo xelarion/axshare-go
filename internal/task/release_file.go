@@ -2,7 +2,7 @@ package task
 
 import (
 	"axshare_go/internal/utils"
-	"github.com/spf13/viper"
+	"os"
 	"path/filepath"
 	"strings"
 )
@@ -16,7 +16,7 @@ func deployAxure(url string, fileName string) (webLink string) {
 }
 
 func checkDirExist() {
-	axurePath, _ = utils.ExpandPath(viper.GetString("axure_path"))
+	axurePath, _ = utils.ExpandPath(os.Getenv("AXURE_PATH"))
 	utils.MkdirPath(axurePath)
 }
 

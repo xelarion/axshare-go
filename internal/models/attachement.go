@@ -4,7 +4,6 @@ import (
 	"axshare_go/internal/db"
 	"axshare_go/internal/utils"
 	"github.com/jinzhu/gorm"
-	"github.com/spf13/viper"
 	"os"
 	"strings"
 )
@@ -43,7 +42,7 @@ func (c *Attachment) WebLink() string {
 	if !c.IsReleased() {
 		return ""
 	}
-	webHost := viper.GetString("web_host")
+	webHost := os.Getenv("AXURE_HOST")
 	return webHost + c.Link
 }
 

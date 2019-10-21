@@ -31,7 +31,7 @@ func initLogger() {
 
 func initConfigEnv() {
 	utils.InitEnv()
-	utils.InitConfig()
+	//utils.InitConfig()
 }
 
 func initDB() {

@@ -3,7 +3,6 @@ package api
 import (
 	"axshare_go/internal/utils"
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
 	"io"
 	"os"
 )
@@ -22,7 +21,7 @@ func RunHttpServer() {
 
 	SetV1Router(router)
 
-	port := viper.GetString("http.port")
+	port := os.Getenv("HTTP_PORT")
 	_ = router.Run(":" + port)
 
 }

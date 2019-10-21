@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	uuid "github.com/satori/go.uuid"
-	"github.com/spf13/viper"
+	"os"
 	"strings"
 )
 
@@ -30,7 +30,7 @@ func (c *Axure) WebLink() string {
 
 // 原型永久地址
 func (c *Axure) PermanentLink() string {
-	adminHost := viper.GetString("admin_host")
+	adminHost := os.Getenv("DASHBOARD_WEB_HOST")
 	permanentLink := strings.Join([]string{
 		adminHost, "/axures/", fmt.Sprint(c.ID), "?key=", c.SecretKey}, "")
 	return permanentLink
