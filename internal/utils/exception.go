@@ -8,10 +8,10 @@ import (
 )
 
 // 恢复发生 panic 异常的程序
-func RecoverProgram() {
+func RecoverProgram(errMsg ...interface{}) {
 	err := recover()
 	if err != nil {
-		logrus.Error(err)
+		logrus.Error("error: " + fmt.Sprint(err) + " ; " + fmt.Sprint(errMsg...))
 	}
 }
 
