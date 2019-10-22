@@ -44,7 +44,7 @@ func (c *Axure) IsReleased() bool {
 
 func (c *Axure) LatestAttachment() Attachment {
 	attachment := Attachment{}
-	db.AxshareDb.Model(&c).Related(&[]Attachment{}).Order("id desc").First(&attachment)
+	db.AxshareDb.Model(&attachment).Where("axure_id = ?", c.ID).Order("id desc").First(&attachment)
 	return attachment
 }
 
