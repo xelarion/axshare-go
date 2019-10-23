@@ -17,7 +17,7 @@ func RunHttpServer() {
 
 	utils.AllowRouterCors(router)
 
-	router.Use(utils.RecoveryLogToLogrus())
+	//router.Use(utils.RecoveryLogToLogrus())
 	router.Use(utils.TokenAuthMiddleware())
 
 	SetV1Router(router)
