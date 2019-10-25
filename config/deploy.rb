@@ -28,7 +28,7 @@ set :repo_url, 'git@github.com:ErvinCheung/axshare-go.git'
 # Default value for :linked_files is []
 # append :linked_files, "config/database.yml"
 # 去掉注释，并加上 "config/master.key", 如果有storage.yml 也加上
-append :linked_files, "machinery.env", "axshare.env", "mysql.env"
+append :linked_files, "config/machinery.env", "config/axshare.env", "config/mysql.env"
 
 append :linked_dirs, "log"
 
