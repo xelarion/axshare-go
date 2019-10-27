@@ -5,9 +5,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/ogsapi/ogs-go"
 	"net/http"
+	"os"
 )
 
 func CreateUploadToken(c *gin.Context) {
 	token := utils.GenUpToken()
-	c.JSON(http.StatusOK, ogs.RspOKWithData(ogs.BlankMessage(), token))
+	data := gin.H{"token": token, "upload_url": os.Getenv("QINIU_UPLOAD_URL")}
+	c.JSON(http.StatusOK, ogs.RspOKWithData(ogs.BlankMessage(), data))
 }
