@@ -32,7 +32,7 @@ func (c *Axure) WebLink() string {
 func (c *Axure) PermanentLink() string {
 	adminHost := os.Getenv("DASHBOARD_WEB_HOST")
 	permanentLink := strings.Join([]string{
-		adminHost, "/axures/", fmt.Sprint(c.ID), "?key=", c.SecretKey}, "")
+		adminHost, "/#/axures/", fmt.Sprint(c.ID), "?key=", c.SecretKey}, "")
 	return permanentLink
 }
 
