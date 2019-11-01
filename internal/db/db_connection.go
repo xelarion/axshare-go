@@ -26,5 +26,8 @@ func InitDbConnection() {
 	gorm.NowFunc = func() time.Time {
 		return time.Now().UTC()
 	}
+
+	// 全局更新/删除锁
+	axshareDb.BlockGlobalUpdate(true)
 	AxshareDb = axshareDb
 }
