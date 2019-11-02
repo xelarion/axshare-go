@@ -11,8 +11,6 @@ import (
 func GetAxureGroups(c *gin.Context) {
 	var axureGroups []models.AxureGroup
 	db.AxshareDb.Model(&models.AxureGroup{}).Find(&axureGroups)
-	c.JSON(http.StatusOK, ogs.RspOKWithPaginate(
-		ogs.BlankMessage(),
-		axureGroups,
-		ogs.NewPaginate(1, 101, 10)))
+	c.JSON(http.StatusOK, ogs.RspOKWithData(
+		ogs.BlankMessage(), axureGroups))
 }

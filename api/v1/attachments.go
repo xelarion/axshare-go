@@ -15,7 +15,7 @@ func GetAttachments(c *gin.Context) {
 		return
 	}
 
-	axureId, _ := utils.ParseUint(c.Param("axure_id"))
+	axureId := utils.ParseUint(c.Param("axure_id"))
 	var attachments []models.Attachment
 	db.AxshareDb.Model(&models.Attachment{}).Where(
 		"axure_id = ?", axureId).Order("id desc").Preload("User").Find(&attachments)

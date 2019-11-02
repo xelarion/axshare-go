@@ -3,9 +3,15 @@ package utils
 import "strconv"
 
 // parse string to uint
-func ParseUint(s string) (n uint64, err error) {
-	n, err = strconv.ParseUint(s, 10, 64)
-	return n, err
+func ParseUint(s string) uint {
+	n, _ := strconv.ParseUint(s, 10, 64)
+	return uint(n)
+}
+
+// parse string to int
+func ParseInt(s string) int {
+	n, _ := strconv.ParseInt(s, 10, 64)
+	return int(n)
 }
 
 func FormatUint(i uint) (s string) {

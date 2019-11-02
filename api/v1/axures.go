@@ -3,6 +3,7 @@ package v1
 import (
 	"axshare_go/internal/db"
 	"axshare_go/internal/models"
+	"axshare_go/internal/pg"
 	"axshare_go/internal/task"
 	"axshare_go/internal/utils"
 	"encoding/json"
@@ -18,13 +19,14 @@ func GetAxures(c *gin.Context) {
 		return
 	}
 
-	axureGroupId, _ := utils.ParseUint(c.Param("axure_group_id"))
 	var axures []models.Axure
-	db.AxshareDb.Where(&models.Axure{AxureGroupId: uint(axureGroupId)}).Order("id desc").Find(&axures)
+	axureGroupId := utils.ParseUint(c.Param("axure_group_id"))
+	relation := db.AxshareDb.Model(&models.Axure{}).Where(&models.Axure{AxureGroupId: uint(axureGroupId)}).Order("id desc")
+	relation, paginate := pg.PaginateGin(relation, c)
+	relation.Find(&axures)
+
 	c.JSON(http.StatusOK, ogs.RspOKWithPaginate(
-		ogs.BlankMessage(),
-		FormatAxureList(axures),
-		ogs.NewPaginate(1, 101, 10)))
+		ogs.BlankMessage(), FormatAxureList(axures), paginate))
 }
 
 func GetAxure(c *gin.Context) {
@@ -33,7 +35,7 @@ func GetAxure(c *gin.Context) {
 		return
 	}
 
-	id, _ := utils.ParseUint(c.Param("id"))
+	id := utils.ParseUint(c.Param("id"))
 	axure := models.Axure{}
 	db.AxshareDb.First(&axure, id)
 	c.JSON(http.StatusOK, ogs.RspOKWithData(ogs.BlankMessage(), axure))
@@ -45,7 +47,7 @@ func GetAxureWebInfo(c *gin.Context) {
 		return
 	}
 
-	id, _ := utils.ParseUint(c.Param("id"))
+	id := utils.ParseUint(c.Param("id"))
 	axure := models.Axure{}
 	db.AxshareDb.First(&axure, id)
 
@@ -65,7 +67,7 @@ func UpdateAxure(c *gin.Context) {
 
 	tx := db.AxshareDb.Begin()
 
-	id, _ := utils.ParseUint(c.Param("id"))
+	id := utils.ParseUint(c.Param("id"))
 	params := utils.GetBodyParams(c).(map[string]interface{})
 
 	axure := models.Axure{}
@@ -88,7 +90,7 @@ func UpdateAxure(c *gin.Context) {
 func CreateAxure(c *gin.Context) {
 	tx := db.AxshareDb.Begin()
 
-	axureGroupId, _ := utils.ParseUint(c.Param("axure_group_id"))
+	axureGroupId := utils.ParseUint(c.Param("axure_group_id"))
 	params := utils.GetBodyParams(c).(map[string]interface{})
 
 	//axure := models.Axure{Name: params["name"].(string)}
