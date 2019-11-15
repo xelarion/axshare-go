@@ -68,7 +68,7 @@ func UpdateAxure(c *gin.Context) {
 	tx := db.AxshareDb.Begin()
 
 	id := utils.ParseUint(c.Param("id"))
-	params := utils.GetBodyParams(c).(map[string]interface{})
+	params := utils.GetBodyParams(c)
 
 	axure := models.Axure{}
 	db.AxshareDb.First(&axure, id)
@@ -91,7 +91,7 @@ func CreateAxure(c *gin.Context) {
 	tx := db.AxshareDb.Begin()
 
 	axureGroupId := utils.ParseUint(c.Param("axure_group_id"))
-	params := utils.GetBodyParams(c).(map[string]interface{})
+	params := utils.GetBodyParams(c)
 
 	//axure := models.Axure{Name: params["name"].(string)}
 	axure := models.Axure{AxureGroupId: uint(axureGroupId)}

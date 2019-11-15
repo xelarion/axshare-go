@@ -14,6 +14,11 @@ func SetV1Router(router *gin.Engine) {
 		r.POST("/user/logout", v1.Logout)
 		r.GET("/user/info", v1.GetUserInfo)
 
+		r.GET("/users", v1.GetUsers)
+		r.GET("/users/:id", v1.GetUser)
+		r.POST("/users", v1.CreateUser)
+		r.PUT("/users/:id", v1.UpdateUser)
+
 		r.GET("/axure_groups", v1.GetAxureGroups)
 
 		r.GET("/axure_groups/:axure_group_id/axures", v1.GetAxures)

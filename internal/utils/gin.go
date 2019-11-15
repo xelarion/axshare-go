@@ -9,8 +9,8 @@ func GetHeaderToken(c *gin.Context) string {
 	return c.GetHeader("Authorization")
 }
 
-func GetBodyParams(c *gin.Context) interface{} {
+func GetBodyParams(c *gin.Context) map[string]interface{} {
 	var params interface{}
 	_ = json.NewDecoder(c.Request.Body).Decode(&params)
-	return params
+	return params.(map[string]interface{})
 }

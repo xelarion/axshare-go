@@ -15,6 +15,7 @@ import (
 type Account struct {
 	gorm.Model
 	Email    string `gorm:"type:varchar(100);unique_index"json:"email"`
+	Nickname string `gorm:"type:varchar(100);unique_index"json:"nickname"`
 	Username string `gorm:"type:varchar(100);unique_index"json:"username"`
 	Password string `gorm:"column:encrypted_password" json:"password"`
 	Token    string `gorm:"-" json:"token"`
@@ -78,14 +79,11 @@ func (account *Account) Validate() (map[string]interface{}, bool) {
 }
 
 func (account *Account) Create() map[string]interface{} {
-
 	if resp, ok := account.Validate(); !ok {
 		return resp
 	}
 
-	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(account.Password), bcrypt.DefaultCost)
-	account.Password = string(hashedPassword)
-
+	account.Password = utils.PasswordToBcrypt(account.Password)
 	db.AxshareDb.Create(account)
 
 	if account.ID <= 0 {
@@ -115,4 +113,3 @@ func (account *Account) GenToken() string {
 func (account *Account) DestroyToken() error {
 	return nil
 }
-
