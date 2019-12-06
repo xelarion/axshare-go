@@ -18,10 +18,15 @@ func GetAxures(c *gin.Context) {
 		c.JSON(http.StatusNotFound, nil)
 		return
 	}
-
 	var axures []models.Axure
 	axureGroupId := utils.ParseUint(c.Param("axure_group_id"))
 	relation := db.AxshareDb.Model(&models.Axure{}).Where(&models.Axure{AxureGroupId: uint(axureGroupId)}).Order("id desc")
+
+	searchConditions := utils.StringToMap(c.Query("search_conditions"))
+	if len(searchConditions) > 0 && len(searchConditions["name"].(string)) > 0 {
+		relation = relation.Where("name LIKE ?", "%"+searchConditions["name"].(string)+"%")
+	}
+
 	relation, paginate := pg.PaginateGin(relation, c)
 	relation.Find(&axures)
 
