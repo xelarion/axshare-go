@@ -29,5 +29,7 @@ func InitDbConnection() {
 
 	// 全局更新/删除锁
 	axshareDb.BlockGlobalUpdate(true)
+	axshareDb.DB().SetMaxIdleConns(0)
+	axshareDb.DB().SetMaxOpenConns(500)
 	AxshareDb = axshareDb
 }
