@@ -15,6 +15,7 @@ type Axure struct {
 	SecretKey    string       `json:"secret_key" binding:"required"`
 	AxureGroupId uint         `gorm:"index"json:"axure_group_id"`
 	Attachments  []Attachment `json:"attachments"`
+	AxureGroup   AxureGroup
 }
 
 func (c *Axure) BeforeCreate() (err error) {

@@ -21,17 +21,17 @@ func GetAttachments(c *gin.Context) {
 	db.AxshareDb.Model(&models.Attachment{}).Where(
 		"axure_id = ?", axureId).Order("id desc").Preload("User").Find(&attachments)
 
-	c.JSON(http.StatusOK, ogs.RspOKWithPaginate(
-		ogs.BlankMessage(),
-		FormatAttachmentList(attachments),
-		ogs.NewPaginate(1, 101, 10)))
+	c.JSON(http.StatusOK,
+		ogs.RspOKWithData(
+			ogs.BlankMessage(),
+			FormatAttachmentList(attachments)))
 }
 
 func GetAllAttachments(c *gin.Context) {
 	var attachments []models.Attachment
 	relation := db.AxshareDb.Model(&models.Attachment{}).Order("id desc")
 	relation, paginate := pg.PaginateGin(relation, c)
-	relation.Preload("User").Find(&attachments)
+	relation.Preload("User").Preload("Axure").Preload("Axure.AxureGroup").Find(&attachments)
 
 	c.JSON(http.StatusOK, ogs.RspOKWithPaginate(
 		ogs.BlankMessage(),
@@ -46,12 +46,9 @@ func FormatAttachmentActivityList(attachments []models.Attachment) []map[string]
 		data["id"] = attachment.ID
 		data["desc"] = attachment.Desc
 
-		axure := models.Axure{}
-		db.AxshareDb.Model(&attachment).Related(&axure)
-		data["axure"] = map[string]interface{}{"name": axure.Name}
+		data["axure"] = map[string]interface{}{"name": attachment.Axure.Name}
 
-		axureGroup := models.AxureGroup{}
-		db.AxshareDb.Model(&axure).Related(&axureGroup)
+		axureGroup := attachment.Axure.AxureGroup
 		data["axure_group"] = map[string]interface{}{
 			"name": axureGroup.Name,
 			"id":   axureGroup.ID,
@@ -63,9 +60,7 @@ func FormatAttachmentActivityList(attachments []models.Attachment) []map[string]
 		data["created_at"] = utils.FormatDateTime(attachment.CreatedAt)
 		data["updated_at"] = utils.FormatDateTime(attachment.UpdatedAt)
 
-		user := models.User{}
-		db.AxshareDb.Model(&attachment).Related(&user)
-		data["user"] = map[string]interface{}{"username": user.Username}
+		data["user"] = map[string]interface{}{"username": attachment.User.Username}
 		json[i] = data
 	}
 	return json

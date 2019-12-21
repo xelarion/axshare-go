@@ -14,6 +14,7 @@ type Attachment struct {
 	Link     string `json:"link"`
 	FileHash string `json:"file_hash"`
 	AxureId  uint   `json:"axure_id" gorm:"index" xml:"axure_id" binding:"required"`
+	Axure    Axure  `json:"axure"`
 	UserId   uint   `gorm:"index" json:"user_id"`
 	User     User   `json:"user"`
 }
