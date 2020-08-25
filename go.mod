@@ -16,8 +16,7 @@ require (
 	github.com/satori/go.uuid v1.2.0
 	github.com/sirupsen/logrus v1.2.0
 	github.com/spf13/viper v1.4.0
+	github.com/xandercheung/ogs-go v1.0.0
 	golang.org/x/crypto v0.0.0-20190325154230-a5d413f7728c
-	gopkg.in/airbrake/gobrake.v2 v2.0.9 // indirect
-	gopkg.in/gemnasium/logrus-airbrake-hook.v2 v2.1.2
 	qiniupkg.com/x v7.0.8+incompatible // indirect
 )

@@ -4,7 +4,7 @@ import (
 	"axshare_go/internal/db"
 	"axshare_go/internal/models"
 	"github.com/gin-gonic/gin"
-	"github.com/ogsapi/ogs-go"
+	"github.com/xandercheung/ogs-go"
 	"net/http"
 )
 
