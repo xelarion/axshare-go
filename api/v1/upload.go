@@ -3,7 +3,7 @@ package v1
 import (
 	"axshare_go/internal/utils"
 	"github.com/gin-gonic/gin"
-	"github.com/ogsapi/ogs-go"
+	"github.com/xandercheung/ogs-go"
 	"net/http"
 	"os"
 )

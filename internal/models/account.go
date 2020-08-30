@@ -5,7 +5,7 @@ import (
 	"axshare_go/internal/utils"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/jinzhu/gorm"
-	"github.com/ogsapi/ogs-go"
+	"github.com/xandercheung/ogs-go"
 	"golang.org/x/crypto/bcrypt"
 	"os"
 	"strings"

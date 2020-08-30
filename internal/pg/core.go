@@ -3,7 +3,7 @@ package pg
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
-	"github.com/ogsapi/ogs-go"
+	"github.com/xandercheung/ogs-go"
 	"strconv"
 )
 

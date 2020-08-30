@@ -9,7 +9,7 @@ import (
 	"encoding/json"
 	"github.com/RichardKnop/machinery/v1/tasks"
 	"github.com/gin-gonic/gin"
-	"github.com/ogsapi/ogs-go"
+	"github.com/xandercheung/ogs-go"
 	"net/http"
 )
 
