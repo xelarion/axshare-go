@@ -3,6 +3,7 @@ package api
 import (
 	"axshare_go/internal/utils"
 	"github.com/gin-gonic/gin"
+	acctapi "github.com/xandercheung/acct/api"
 	"io"
 	"os"
 )
@@ -12,14 +13,15 @@ func RunHttpServer() {
 	f, _ := os.OpenFile("log/http.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	gin.DefaultWriter = io.MultiWriter(f)
 
+	gin.SetMode(gin.ReleaseMode)
 	// 定义路由
 	router := gin.Default()
 
 	utils.AllowRouterCors(router)
 
 	//router.Use(utils.RecoveryLogToLogrus())
-	router.Use(utils.TokenAuthMiddleware())
 
+	acctapi.SetAcctRouter(router)
 	SetV1Router(router)
 
 	port := os.Getenv("HTTP_PORT")

@@ -2,7 +2,6 @@ package utils
 
 import (
 	"github.com/joho/godotenv"
-	"os"
 )
 
 func InitEnv() {
@@ -13,7 +12,3 @@ func InitEnv() {
 	}
 }
 
-func IsProductionEnv() bool {
-	env := os.Getenv("ENV")
-	return env == "production"
-}

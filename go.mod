@@ -3,11 +3,12 @@ module axshare_go
 go 1.12
 
 require (
+	cloud.google.com/go v0.37.4 // indirect
 	github.com/RichardKnop/machinery v1.6.9
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-contrib/cors v1.3.0
-	github.com/gin-gonic/gin v1.4.0
-	github.com/jinzhu/gorm v1.9.10
+	github.com/gin-gonic/gin v1.6.3
+	github.com/jinzhu/gorm v1.9.16
 	github.com/joho/godotenv v1.3.0
 	github.com/qiniu/api.v7 v7.2.5+incompatible
 	github.com/qiniu/x v7.0.8+incompatible // indirect
@@ -15,7 +16,8 @@ require (
 	github.com/satori/go.uuid v1.2.0
 	github.com/sirupsen/logrus v1.2.0
 	github.com/spf13/viper v1.4.0
+	github.com/xandercheung/acct v0.0.3
 	github.com/xandercheung/ogs-go v1.0.0
-	golang.org/x/crypto v0.0.0-20190325154230-a5d413f7728c
+	golang.org/x/crypto v0.0.0-20191205180655-e7c4368fe9dd
 	qiniupkg.com/x v7.0.8+incompatible // indirect
 )

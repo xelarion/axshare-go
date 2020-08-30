@@ -3,6 +3,7 @@ package api
 import (
 	"axshare_go/api/v1"
 	"github.com/gin-gonic/gin"
+	"github.com/xandercheung/acct"
 )
 
 func SetV1Router(router *gin.Engine) {
@@ -10,14 +11,7 @@ func SetV1Router(router *gin.Engine) {
 	{
 		r.GET("/axures/:id", v1.GetAxureWebInfo)
 
-		r.POST("/user/login", v1.Login)
-		r.POST("/user/logout", v1.Logout)
-		r.GET("/user/info", v1.GetUserInfo)
-
-		r.GET("/users", v1.GetUsers)
-		r.GET("/users/:id", v1.GetUser)
-		r.POST("/users", v1.CreateUser)
-		r.PUT("/users/:id", v1.UpdateUser)
+		r.Use(acct.TokenAuthMiddleware())
 
 		r.GET("/axure_groups", v1.GetAxureGroups)
 

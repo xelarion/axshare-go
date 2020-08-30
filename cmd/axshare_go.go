@@ -7,16 +7,12 @@ import (
 	"axshare_go/internal/jobs"
 	"axshare_go/internal/task"
 	"axshare_go/internal/utils"
-	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
 
 func main() {
 	initLogger()
-	logrus.Info("axshare main start")
 	initConfigEnv()
 	initDB()
-	initGinSetting()
 
 	serverChan := make(chan int)
 
@@ -40,10 +36,4 @@ func initDB() {
 	db.InitDbConnection()
 	migrate.Migrate()
 	migrate.Seed()
-}
-
-func initGinSetting() {
-	if utils.IsProductionEnv() {
-		gin.SetMode(gin.ReleaseMode)
-	}
 }
