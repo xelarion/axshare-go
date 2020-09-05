@@ -6,12 +6,14 @@ import (
 	"axshare_go/internal/db/migrate"
 	"axshare_go/internal/jobs"
 	"axshare_go/internal/task"
-	"axshare_go/internal/utils"
+	"github.com/joho/godotenv"
+	"github.com/sirupsen/logrus"
+	"os"
 )
 
 func main() {
 	initLogger()
-	initConfigEnv()
+	InitEnv()
 	initDB()
 
 	serverChan := make(chan int)
@@ -24,16 +26,22 @@ func main() {
 }
 
 func initLogger() {
-	utils.InitLogger()
-}
-
-func initConfigEnv() {
-	utils.InitEnv()
-	//utils.InitConfig()
+	file, err := os.OpenFile("log/production.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	if err == nil {
+		logrus.SetOutput(file)
+	}
 }
 
 func initDB() {
 	db.InitDbConnection()
 	migrate.Migrate()
 	migrate.Seed()
+}
+
+func InitEnv() {
+	// 从.env文件加载env变量
+	err := godotenv.Load("config/.env", "config/axshare.env")
+	if err != nil {
+		panic(err)
+	}
 }

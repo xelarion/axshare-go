@@ -1,28 +1,26 @@
 package models
 
 import (
-	"axshare_go/internal/db"
 	"axshare_go/internal/utils"
-	"github.com/jinzhu/gorm"
+	"github.com/xandercheung/acct"
+	"gorm.io/gorm"
 	"os"
 	"strings"
 )
 
 type Attachment struct {
 	gorm.Model
-	Desc     string `json:"desc" xml:"desc" binding:"required"`
-	Link     string `json:"link"`
-	FileHash string `json:"file_hash"`
-	AxureId  uint   `json:"axure_id" gorm:"index" xml:"axure_id" binding:"required"`
-	Axure    Axure  `json:"axure"`
-	UserId   uint   `gorm:"index" json:"user_id"`
-	User     User   `json:"user"`
+	Desc     string       `json:"desc" xml:"desc" binding:"required"`
+	Link     string       `json:"link"`
+	FileHash string       `json:"file_hash"`
+	AxureId  uint         `json:"axure_id" gorm:"index" xml:"axure_id" binding:"required"`
+	Axure    Axure        `json:"axure" gorm:"foreignKey:AxureId"`
+	UserId   uint         `gorm:"index" json:"user_id"`
+	User     acct.Account `json:"user" gorm:"foreignKey:UserId"`
 }
 
 func (c *Attachment) GenFileName() string {
-	axure := Axure{}
-	db.AxshareDb.Model(&c).Related(&axure)
-
+	axure := FindAxure(c.AxureId)
 	fileName := strings.Join([]string{
 		utils.FormatUint(axure.AxureGroupId),
 		utils.Strftime(c.CreatedAt, "20060102150405"),

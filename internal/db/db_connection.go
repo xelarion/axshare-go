@@ -1,17 +1,17 @@
 package db
 
 import (
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/xandercheung/acct"
+	"gorm.io/gorm"
 )
 
 var AxshareDb *gorm.DB
 
 func InitDbConnection() {
-	var err error
-	AxshareDb, err = acct.InitDBConnection("mysql", acct.GetMysqlConnectArgsFromEnv())
-	if err != nil {
+	dsn := acct.GetMysqlConnectArgsFromEnv()
+	if err := acct.ConnectDB(dsn); err != nil {
 		panic("failed to connect database." + err.Error())
 	}
+
+	AxshareDb = acct.DB
 }

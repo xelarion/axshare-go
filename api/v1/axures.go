@@ -3,12 +3,12 @@ package v1
 import (
 	"axshare_go/internal/db"
 	"axshare_go/internal/models"
-	"axshare_go/internal/pg"
 	"axshare_go/internal/task"
 	"axshare_go/internal/utils"
 	"encoding/json"
 	"github.com/RichardKnop/machinery/v1/tasks"
 	"github.com/gin-gonic/gin"
+	"github.com/xandercheung/acct"
 	"github.com/xandercheung/ogs-go"
 	"net/http"
 )
@@ -27,7 +27,7 @@ func GetAxures(c *gin.Context) {
 		relation = relation.Where("name LIKE ?", "%"+searchConditions["name"].(string)+"%")
 	}
 
-	relation, paginate := pg.PaginateGin(relation, c)
+	relation, paginate := acct.Utils.PaginateGin(relation, c)
 	relation.Find(&axures)
 
 	c.JSON(http.StatusOK, ogs.RspOKWithPaginate(

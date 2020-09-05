@@ -3,8 +3,8 @@ package models
 import (
 	"axshare_go/internal/db"
 	"fmt"
-	"github.com/jinzhu/gorm"
 	uuid "github.com/satori/go.uuid"
+	"gorm.io/gorm"
 	"os"
 	"strings"
 )
@@ -14,11 +14,17 @@ type Axure struct {
 	Name         string       `json:"name" xml:"name" binding:"required"`
 	SecretKey    string       `json:"secret_key" binding:"required"`
 	AxureGroupId uint         `gorm:"index"json:"axure_group_id"`
-	Attachments  []Attachment `json:"attachments"`
-	AxureGroup   AxureGroup
+	AxureGroup   AxureGroup   `gorm:"foreignKey:AxureGroupId"`
+	Attachments  []Attachment `json:"attachments" gorm:"foreignKey:AxureId"`
 }
 
-func (c *Axure) BeforeCreate() (err error) {
+func FindAxure(id uint) Axure {
+	axure := Axure{}
+	db.AxshareDb.Find(&axure, id)
+	return axure
+}
+
+func (c *Axure) BeforeCreate(tx *gorm.DB) (err error) {
 	c.genSecretKey()
 	return
 }

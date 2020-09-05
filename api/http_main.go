@@ -3,7 +3,6 @@ package api
 import (
 	"axshare_go/internal/utils"
 	"github.com/gin-gonic/gin"
-	acctapi "github.com/xandercheung/acct/api"
 	"io"
 	"os"
 )
@@ -21,7 +20,6 @@ func RunHttpServer() {
 
 	//router.Use(utils.RecoveryLogToLogrus())
 
-	acctapi.SetAcctRouter(router)
 	SetV1Router(router)
 
 	port := os.Getenv("HTTP_PORT")

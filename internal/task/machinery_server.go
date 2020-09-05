@@ -12,9 +12,9 @@ var MachineryServer *machinery.Server
 
 func startMachineryServer() (*machinery.Server, error) {
 	var cnf = &config.Config{
-		Broker:        os.Getenv("MACHINERY_BROKER"),
+		Broker:        os.Getenv("REDIS_URL"),
 		DefaultQueue:  "machinery_tasks",
-		ResultBackend: os.Getenv("MACHINERY_RESULT_BACKEND"),
+		ResultBackend: os.Getenv("REDIS_URL"),
 		AMQP: &config.AMQPConfig{
 			Exchange:      "machinery_exchange",
 			ExchangeType:  "direct",

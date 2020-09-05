@@ -8,15 +8,18 @@ import (
 )
 
 func Migrate() {
-	logrus.Info("migrate ...")
-	acct.MigrateTables()
-	db.AxshareDb.Set("gorm:table_options", "CHARSET=utf8mb4").Debug().AutoMigrate(
-		&models.User{},
+	_ = db.AxshareDb.Set("gorm:table_options", "CHARSET=utf8mb4").Debug().AutoMigrate(
+		&acct.Account{},
 		&models.AxureGroup{},
 		&models.Axure{},
 		&models.Attachment{})
 }
 
 func Seed() {
-	acct.DBSeed()
+	if !acct.Finder.IsAccountWithDeletedExists(map[string]interface{}{"username": "admin"}, nil) {
+		account := acct.Account{Email: "admin@qq.com", Username: "admin", Password: "admin@123456"}
+		if err := account.Create(); err != nil {
+			logrus.Error("db seed error: ", err.Error())
+		}
+	}
 }

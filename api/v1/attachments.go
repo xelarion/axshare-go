@@ -3,9 +3,9 @@ package v1
 import (
 	"axshare_go/internal/db"
 	"axshare_go/internal/models"
-	"axshare_go/internal/pg"
 	"axshare_go/internal/utils"
 	"github.com/gin-gonic/gin"
+	"github.com/xandercheung/acct"
 	"github.com/xandercheung/ogs-go"
 	"net/http"
 )
@@ -30,7 +30,7 @@ func GetAttachments(c *gin.Context) {
 func GetAllAttachments(c *gin.Context) {
 	var attachments []models.Attachment
 	relation := db.AxshareDb.Model(&models.Attachment{}).Order("id desc")
-	relation, paginate := pg.PaginateGin(relation, c)
+	relation, paginate := acct.Utils.PaginateGin(relation, c)
 	relation.Preload("User").Preload("Axure").Preload("Axure.AxureGroup").Find(&attachments)
 
 	c.JSON(http.StatusOK, ogs.RspOKWithPaginate(
@@ -60,7 +60,7 @@ func FormatAttachmentActivityList(attachments []models.Attachment) []map[string]
 		data["created_at"] = utils.FormatDateTime(attachment.CreatedAt)
 		data["updated_at"] = utils.FormatDateTime(attachment.UpdatedAt)
 
-		data["user"] = map[string]interface{}{"username": attachment.User.Username}
+		data["user"] = map[string]interface{}{"nickname": attachment.User.Nickname}
 		json[i] = data
 	}
 	return json
@@ -77,7 +77,7 @@ func FormatAttachmentList(attachments []models.Attachment) []map[string]interfac
 		data["web_link"] = attachment.WebLink()
 		data["created_at"] = utils.FormatDateTime(attachment.CreatedAt)
 		data["updated_at"] = utils.FormatDateTime(attachment.UpdatedAt)
-		data["user"] = map[string]interface{}{"username": attachment.User.Username}
+		data["user"] = map[string]interface{}{"nickname": attachment.User.Nickname}
 		json[i] = data
 	}
 	return json
