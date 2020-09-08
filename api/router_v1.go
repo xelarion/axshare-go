@@ -17,8 +17,8 @@ func SetV1Router(router *gin.Engine) {
 
 		accounts := r.Group("/accounts")
 		{
-			accounts.GET("/", acct.Handler.FetchAccounts)
-			accounts.POST("/", acct.Handler.CreateAccount)
+			accounts.GET("", acct.Handler.FetchAccounts)
+			accounts.POST("", acct.Handler.CreateAccount)
 			accounts.GET("/:id", acct.Handler.FetchAccount)
 			accounts.POST("/:id", acct.Handler.UpdateAccount)
 			accounts.DELETE("/:id", acct.Handler.DestroyAccount)

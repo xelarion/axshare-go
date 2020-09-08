@@ -18,7 +18,7 @@ func main() {
 
 	serverChan := make(chan int)
 
-	jobs.CronMain()
+	go jobs.CronMain()
 	go api.RunHttpServer()
 	go task.RunMachineryServer()
 
