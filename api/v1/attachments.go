@@ -19,22 +19,21 @@ func GetAttachments(c *gin.Context) {
 	axureId := utils.ParseUint(c.Param("axure_id"))
 	var attachments []models.Attachment
 	db.AxshareDb.Model(&models.Attachment{}).Where(
-		"axure_id = ?", axureId).Order("id desc").Preload("User").Find(&attachments)
+		"axure_id = ?", axureId).Order("id desc").Preload("Account").Find(&attachments)
 
-	c.JSON(http.StatusOK,
-		ogs.RspOKWithData(
-			ogs.BlankMessage(),
-			FormatAttachmentList(attachments)))
+	c.JSON(http.StatusOK, ogs.RspOKWithData("", FormatAttachmentList(attachments)))
 }
 
 func GetAllAttachments(c *gin.Context) {
 	var attachments []models.Attachment
 	relation := db.AxshareDb.Model(&models.Attachment{}).Order("id desc")
 	relation, paginate := acct.Utils.PaginateGin(relation, c)
-	relation.Preload("User").Preload("Axure").Preload("Axure.AxureGroup").Find(&attachments)
+	relation.Preload("Account").
+		Preload("Axure").
+		Preload("Axure.AxureGroup").
+		Find(&attachments)
 
-	c.JSON(http.StatusOK, ogs.RspOKWithPaginate(
-		ogs.BlankMessage(),
+	c.JSON(http.StatusOK, ogs.RspOKWithPaginate("",
 		FormatAttachmentActivityList(attachments),
 		paginate))
 }
@@ -55,12 +54,15 @@ func FormatAttachmentActivityList(attachments []models.Attachment) []map[string]
 		}
 
 		data["download_url"] = attachment.DownloadUrl()
-		data["is_released"] = attachment.IsReleased()
+		data["release_status"] = attachment.ReleaseStatus
 		data["web_link"] = attachment.WebLink()
 		data["created_at"] = utils.FormatDateTime(attachment.CreatedAt)
 		data["updated_at"] = utils.FormatDateTime(attachment.UpdatedAt)
 
-		data["user"] = map[string]interface{}{"nickname": attachment.User.Nickname}
+		data["user"] = map[string]interface{}{
+			"nickname": attachment.Account.Nickname,
+			"username": attachment.Account.Username,
+		}
 		json[i] = data
 	}
 	return json
@@ -73,11 +75,14 @@ func FormatAttachmentList(attachments []models.Attachment) []map[string]interfac
 		data["id"] = attachment.ID
 		data["desc"] = attachment.Desc
 		data["download_url"] = attachment.DownloadUrl()
-		data["is_released"] = attachment.IsReleased()
+		data["release_status"] = attachment.ReleaseStatus
 		data["web_link"] = attachment.WebLink()
 		data["created_at"] = utils.FormatDateTime(attachment.CreatedAt)
 		data["updated_at"] = utils.FormatDateTime(attachment.UpdatedAt)
-		data["user"] = map[string]interface{}{"nickname": attachment.User.Nickname}
+		data["user"] = map[string]interface{}{
+			"nickname": attachment.Account.Nickname,
+			"username": attachment.Account.Username,
+		}
 		json[i] = data
 	}
 	return json

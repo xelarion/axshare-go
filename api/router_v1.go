@@ -23,16 +23,21 @@ func SetV1Router(router *gin.Engine) {
 			accounts.POST("/:id", acct.Handler.UpdateAccount)
 			accounts.DELETE("/:id", acct.Handler.DestroyAccount)
 			accounts.POST("/:id/password", acct.Handler.UpdateAccountPassword)
+			accounts.POST("/:id/reset_password", v1.ResetAccountPassword)
 		}
 
 		r.GET("/account/info", acct.Handler.FetchCurrentAccountInfo)
 
 		r.GET("/axure_groups", v1.GetAxureGroups)
+		r.POST("/axure_groups", v1.CreateAxureGroup)
+		r.GET("/axure_group/:id", v1.GetAxureGroup)
+		r.POST("/axure_group/:id", v1.UpdateAxureGroup)
 
 		r.GET("/axure_groups/:axure_group_id/axures", v1.GetAxures)
 		r.GET("/axure_groups/:axure_group_id/axure/:id", v1.GetAxure)
 		r.POST("/axure_groups/:axure_group_id/axures", v1.CreateAxure)
 		r.PUT("/axure_groups/:axure_group_id/axure/:id", v1.UpdateAxure)
+		r.DELETE("/axure_groups/:axure_group_id/axure/:id", v1.DestroyAxure)
 
 		r.GET("/axure_groups/:axure_group_id/axures/:axure_id/attachments", v1.GetAttachments)
 

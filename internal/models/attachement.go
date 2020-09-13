@@ -10,13 +10,14 @@ import (
 
 type Attachment struct {
 	gorm.Model
-	Desc     string       `json:"desc" xml:"desc" binding:"required"`
-	Link     string       `json:"link"`
-	FileHash string       `json:"file_hash"`
-	AxureId  uint         `json:"axure_id" gorm:"index" xml:"axure_id" binding:"required"`
-	Axure    Axure        `json:"axure" gorm:"foreignKey:AxureId"`
-	UserId   uint         `gorm:"index" json:"user_id"`
-	User     acct.Account `json:"user" gorm:"foreignKey:UserId"`
+	Desc          string                  `json:"desc" xml:"desc" binding:"required"`
+	Link          string                  `json:"link"`
+	FileHash      string                  `json:"file_hash"`
+	ReleaseStatus AttachmentReleaseStatus `gorm:"type:smallint;default:0" json:"release_status"`
+	AxureId       uint                    `json:"axure_id" gorm:"index" xml:"axure_id" binding:"required"`
+	Axure         Axure                   `json:"axure" gorm:"foreignKey:AxureId"`
+	AccountId     uint                    `gorm:"index" json:"account_id"`
+	Account       acct.Account            `json:"user" gorm:"foreignKey:AccountId"`
 }
 
 func (c *Attachment) GenFileName() string {
@@ -32,8 +33,12 @@ func (c *Attachment) GenFileName() string {
 
 // 文件是否解压
 func (c *Attachment) IsReleased() bool {
-	isReleased := len(c.Link) > 0
-	return isReleased
+	return c.ReleaseStatus == AttachmentReleaseStatusSuccessful
+}
+
+// 文件是否上传
+func (c *Attachment) IsFileUploaded() bool {
+	return len(c.FileHash) > 0
 }
 
 // 原型静态web链接
@@ -41,12 +46,11 @@ func (c *Attachment) WebLink() string {
 	if !c.IsReleased() {
 		return ""
 	}
-	webHost := os.Getenv("AXURE_HOST")
-	return webHost + c.Link
+
+	return os.Getenv("AXURE_HOST") + c.Link
 }
 
 // 原型压缩包下载地址
 func (c *Attachment) DownloadUrl() string {
-	domain := os.Getenv("QINIU_BUCKET_DOMAIN")
-	return domain + "/" + c.FileHash
+	return os.Getenv("QINIU_BUCKET_DOMAIN") + "/" + c.FileHash
 }

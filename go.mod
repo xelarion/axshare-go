@@ -14,8 +14,8 @@ require (
 	github.com/robfig/cron v1.2.0
 	github.com/satori/go.uuid v1.2.0
 	github.com/sirupsen/logrus v1.2.0
-	github.com/xandercheung/acct v0.0.8
-	github.com/xandercheung/ogs-go v1.0.0
+	github.com/xandercheung/acct v1.0.0
+	github.com/xandercheung/ogs-go v1.0.1
 	golang.org/x/crypto v0.0.0-20191205180655-e7c4368fe9dd
 	golang.org/x/net v0.0.0-20200324143707-d3edc9973b7e // indirect
 	gorm.io/gorm v1.20.0

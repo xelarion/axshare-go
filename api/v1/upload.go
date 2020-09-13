@@ -11,5 +11,5 @@ import (
 func CreateUploadToken(c *gin.Context) {
 	token := utils.GenUpToken()
 	data := gin.H{"token": token, "upload_url": os.Getenv("QINIU_UPLOAD_URL")}
-	c.JSON(http.StatusOK, ogs.RspOKWithData(ogs.BlankMessage(), data))
+	c.JSON(http.StatusOK, ogs.RspOKWithData("", data))
 }

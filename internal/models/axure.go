@@ -43,15 +43,11 @@ func (c *Axure) PermanentLink() string {
 	return permanentLink
 }
 
-// 文件是否解压
-func (c *Axure) IsReleased() bool {
-	attachment := c.LatestAttachment()
-	return attachment.IsReleased()
-}
-
 func (c *Axure) LatestAttachment() Attachment {
 	attachment := Attachment{}
-	db.AxshareDb.Model(&attachment).Where("axure_id = ?", c.ID).Order("id desc").First(&attachment)
+	db.AxshareDb.Model(&attachment).
+		Where("axure_id = ?", c.ID).
+		Last(&attachment)
 	return attachment
 }
 

@@ -243,8 +243,14 @@ github.com/xandercheung/acct v0.0.7 h1:23v8fXRnF5vyVwAMv/IX/vBkIpEY8XHjquYLvLkhb
 github.com/xandercheung/acct v0.0.7/go.mod h1:5siHL1LMX2V925VMwdX2EsdN6W/uZCrHaQZNGyOUqAM=
 github.com/xandercheung/acct v0.0.8 h1:dKhqF2c4BSLw1r3+WTK2Qn7faEH5qcQbrO1L2LeO+Os=
 github.com/xandercheung/acct v0.0.8/go.mod h1:KJGjsscQv+RxHPGvJGUnsNrhzuWvJuI4JaxRlngi1A8=
+github.com/xandercheung/acct v0.0.9 h1:2hxLdNaDXqXRFmPuZzXLTsbTwiXihDTg14MdeobPllY=
+github.com/xandercheung/acct v0.0.9/go.mod h1:QQYQmzuDgOna28MQVYuHompxR13tid+YVKVQPGtxErI=
+github.com/xandercheung/acct v1.0.0 h1:qyLgKGOe/7EKyZ1Shj7i6NVHeGMkSEiScxxuo0D7UUM=
+github.com/xandercheung/acct v1.0.0/go.mod h1:QQYQmzuDgOna28MQVYuHompxR13tid+YVKVQPGtxErI=
 github.com/xandercheung/ogs-go v1.0.0 h1:BfD7D72h5IErhVTYcEs96L5XNr7aEnyv1iR+d9iIEMY=
 github.com/xandercheung/ogs-go v1.0.0/go.mod h1:5DZ63+/kg64eOGorH6KnU4arx5+bXAhB/3iNM/p97G0=
+github.com/xandercheung/ogs-go v1.0.1 h1:BAkWlf867Sm3a5iF70rdLgS+W+VFHc3Zu/egjvrZuyY=
+github.com/xandercheung/ogs-go v1.0.1/go.mod h1:5DZ63+/kg64eOGorH6KnU4arx5+bXAhB/3iNM/p97G0=
 github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c h1:u40Z8hqBAAQyv+vATcGgV0YCnDjqSL7/q/JyPhhJSPk=
 github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c/go.mod h1:lB8K/P019DLNhemzwFU4jHLhdvlE6uDZjXFejJXr49I=
 github.com/xdg/stringprep v1.0.0 h1:d9X0esnoa3dFsV0FG35rAT0RIhYFlPq7MiP+DW89La0=

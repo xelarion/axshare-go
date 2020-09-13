@@ -56,9 +56,17 @@ func DirExists(path string) bool {
 	}
 }
 
-func MkdirPath(path string) {
-	path, _ = ExpandPath(path)
-	if !DirExists(path) {
-		_ = os.MkdirAll(path, os.FileMode(0777))
+func MkdirPath(path string) error {
+	var err error
+	if path, err = ExpandPath(path); err != nil {
+		return err
 	}
+
+	if !DirExists(path) {
+		if err = os.MkdirAll(path, os.FileMode(0777)); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
