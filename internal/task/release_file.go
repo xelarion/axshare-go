@@ -1,9 +1,10 @@
 package task
 
 import (
+	"axshare_go/internal/models"
 	"axshare_go/internal/utils"
 	"errors"
-	"os"
+	"fmt"
 	"path/filepath"
 	"strings"
 	"sync"
@@ -25,8 +26,9 @@ func checkDirExist() error {
 	defer checkDeployDirLock.Unlock()
 
 	var err error
-	if axurePath, err = utils.ExpandPath(os.Getenv("AXURE_PATH")); err != nil {
-		return err
+	if axurePath, err = utils.ExpandPath(models.CacheConfig.FileReleaseDir); err != nil {
+		errMsg := fmt.Sprintf("请检查原型解压文件夹配置是否正确 '%s', error: , %s", models.CacheConfig.FileReleaseDir, err.Error())
+		return errors.New(errMsg)
 	}
 
 	return utils.MkdirPath(axurePath)
@@ -37,24 +39,29 @@ func download(url string, fileName string) (webLink string, err error) {
 	axureZipPath := filepath.Join(axureFileDir, fileName)
 
 	if err = utils.RunCommand("wget", url, "-O", axureZipPath); err != nil {
-		return "", err
+		errMsg := fmt.Sprintf("执行 wget 命令发生异常, error: , %s", err.Error())
+		return "", errors.New(errMsg)
 	}
 
 	if err = utils.RunCommand("unar", axureZipPath, "-o", axureFileDir); err != nil {
-		return "", err
+		errMsg := fmt.Sprintf("执行 unar 解压命令发生异常, error: , %s", err.Error())
+		return "", errors.New(errMsg)
 	}
 
 	if err = utils.RunCommand("rm", axureZipPath); err != nil {
-		return "", err
+		errMsg := fmt.Sprintf("执行 rm 命令发生异常, error: , %s", err.Error())
+		return "", errors.New(errMsg)
 	}
 
 	indexHtmlPath, err := filepath.Glob(filepath.Join(axureFileDir, "/*/index.html"))
 	if err != nil {
-		return "", err
+		errMsg := fmt.Sprintf("请检查上传的文件是否包含 index.html 文件, error: , %s", err.Error())
+		return "", errors.New(errMsg)
 	}
 
 	if indexHtmlPath == nil {
-		return "", errors.New("release failed")
+		errMsg := fmt.Sprintf("请检查上传的文件是否正确！需包含 index.html 文件")
+		return "", errors.New(errMsg)
 	}
 
 	webLink = strings.ReplaceAll(indexHtmlPath[0], axurePath, "")
@@ -63,6 +70,6 @@ func download(url string, fileName string) (webLink string, err error) {
 
 func genAxureFileDir(fileName string) string {
 	fileDir := filepath.Join(axurePath, fileName)
-	utils.MkdirPath(fileDir)
+	_ = utils.MkdirPath(fileDir)
 	return fileDir
 }

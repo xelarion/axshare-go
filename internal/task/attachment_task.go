@@ -16,7 +16,10 @@ func releaseAttachment(attachmentId uint) error {
 	webLink, err := deployAxure(attachment.DownloadUrl(), attachment.GenFileName())
 	if err != nil {
 		logrus.Error("releaseAttachment error, id: ", attachment.ID, ", error: ", err.Error())
-		db.AxshareDb.Model(&attachment).Update("release_status", models.AttachmentReleaseStatusFailed)
+		db.AxshareDb.Model(&attachment).Updates(models.Attachment{
+			ReleaseStatus: models.AttachmentReleaseStatusFailed,
+			ReleaseError:  err.Error(),
+		})
 	} else {
 		db.AxshareDb.Model(&attachment).Updates(models.Attachment{
 			ReleaseStatus: models.AttachmentReleaseStatusSuccessful,

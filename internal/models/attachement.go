@@ -4,7 +4,6 @@ import (
 	"axshare_go/internal/utils"
 	"github.com/xandercheung/acct"
 	"gorm.io/gorm"
-	"os"
 	"strings"
 )
 
@@ -14,6 +13,7 @@ type Attachment struct {
 	Link          string                  `json:"link"`
 	FileHash      string                  `json:"file_hash"`
 	ReleaseStatus AttachmentReleaseStatus `gorm:"type:smallint;default:0" json:"release_status"`
+	ReleaseError  string                  `json:"release_error"`
 	AxureId       uint                    `json:"axure_id" gorm:"index" xml:"axure_id" binding:"required"`
 	Axure         Axure                   `json:"axure" gorm:"foreignKey:AxureId"`
 	AccountId     uint                    `gorm:"index" json:"account_id"`
@@ -47,10 +47,10 @@ func (c *Attachment) WebLink() string {
 		return ""
 	}
 
-	return os.Getenv("AXURE_HOST") + c.Link
+	return CacheConfig.WebDomain + c.Link
 }
 
 // 原型压缩包下载地址
 func (c *Attachment) DownloadUrl() string {
-	return os.Getenv("QINIU_BUCKET_DOMAIN") + "/" + c.FileHash
+	return CacheConfig.QiniuBucketDomain + "/" + c.FileHash
 }

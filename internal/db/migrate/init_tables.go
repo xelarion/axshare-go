@@ -10,6 +10,7 @@ import (
 func Migrate() {
 	_ = db.AxshareDb.Set("gorm:table_options", "CHARSET=utf8mb4").Debug().AutoMigrate(
 		&acct.Account{},
+		&models.Config{},
 		&models.AxureGroup{},
 		&models.Axure{},
 		&models.Attachment{})

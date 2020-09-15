@@ -5,6 +5,7 @@ import (
 	"axshare_go/internal/db"
 	"axshare_go/internal/db/migrate"
 	"axshare_go/internal/jobs"
+	"axshare_go/internal/models"
 	"axshare_go/internal/task"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
@@ -15,6 +16,8 @@ func main() {
 	initLogger()
 	InitEnv()
 	initDB()
+
+	models.InitCacheConfig()
 
 	serverChan := make(chan int)
 
@@ -40,7 +43,7 @@ func initDB() {
 
 func InitEnv() {
 	// 从.env文件加载env变量
-	err := godotenv.Load("config/.env", "config/axshare.env")
+	err := godotenv.Load("config/.env")
 	if err != nil {
 		panic(err)
 	}

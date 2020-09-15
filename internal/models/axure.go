@@ -5,8 +5,6 @@ import (
 	"fmt"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
-	"os"
-	"strings"
 )
 
 type Axure struct {
@@ -37,10 +35,7 @@ func (c *Axure) WebLink() string {
 
 // 原型永久地址
 func (c *Axure) PermanentLink() string {
-	adminHost := os.Getenv("DASHBOARD_WEB_HOST")
-	permanentLink := strings.Join([]string{
-		adminHost, "/#/axures/", fmt.Sprint(c.ID), "?key=", c.SecretKey}, "")
-	return permanentLink
+	return fmt.Sprintf("%s/#/axures/%d?key=%s", CacheConfig.WebDomain, c.ID, c.SecretKey)
 }
 
 func (c *Axure) LatestAttachment() Attachment {

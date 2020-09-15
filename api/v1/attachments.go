@@ -55,6 +55,7 @@ func FormatAttachmentActivityList(attachments []models.Attachment) []map[string]
 
 		data["download_url"] = attachment.DownloadUrl()
 		data["release_status"] = attachment.ReleaseStatus
+		data["release_error"] = attachment.ReleaseError
 		data["web_link"] = attachment.WebLink()
 		data["created_at"] = utils.FormatDateTime(attachment.CreatedAt)
 		data["updated_at"] = utils.FormatDateTime(attachment.UpdatedAt)
@@ -76,6 +77,7 @@ func FormatAttachmentList(attachments []models.Attachment) []map[string]interfac
 		data["desc"] = attachment.Desc
 		data["download_url"] = attachment.DownloadUrl()
 		data["release_status"] = attachment.ReleaseStatus
+		data["release_error"] = attachment.ReleaseError
 		data["web_link"] = attachment.WebLink()
 		data["created_at"] = utils.FormatDateTime(attachment.CreatedAt)
 		data["updated_at"] = utils.FormatDateTime(attachment.UpdatedAt)

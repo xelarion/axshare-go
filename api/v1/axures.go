@@ -143,6 +143,7 @@ func FormatAxureList(axures []models.Axure) []map[string]interface{} {
 		data["name"] = axure.Name
 		data["updated_at"] = utils.FormatDateTime(axure.UpdatedAt)
 		data["release_status"] = attachment.ReleaseStatus
+		data["release_error"] = attachment.ReleaseError
 		data["web_link"] = axure.WebLink()
 		data["permanent_link"] = axure.PermanentLink()
 		data["axure_group_id"] = axure.AxureGroupId

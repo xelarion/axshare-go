@@ -12,6 +12,7 @@ func SetV1Router(router *gin.Engine) {
 		r.POST("/sign_in", acct.Handler.SignIn)
 
 		r.GET("/axures/:id", v1.GetAxureWebInfo)
+		r.GET("/config/public", v1.GetPublicConfig)
 
 		r.Use(acct.TokenAuthMiddleware())
 
@@ -44,5 +45,7 @@ func SetV1Router(router *gin.Engine) {
 		r.GET("/attachments", v1.GetAllAttachments)
 
 		r.GET("/upload/token", v1.CreateUploadToken)
+		r.GET("/config", v1.GetConfig)
+		r.POST("/config", v1.UpdateConfig)
 	}
 }
