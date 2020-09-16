@@ -5,22 +5,23 @@ import (
 	"axshare_go/internal/db"
 	"axshare_go/internal/db/migrate"
 	"axshare_go/internal/jobs"
+	"axshare_go/internal/models"
 	"axshare_go/internal/task"
-	"axshare_go/internal/utils"
-	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
+	"os"
 )
 
 func main() {
 	initLogger()
-	logrus.Info("axshare main start")
-	initConfigEnv()
+	InitEnv()
 	initDB()
-	initGinSetting()
+
+	models.InitCacheConfig()
 
 	serverChan := make(chan int)
 
-	jobs.CronMain()
+	go jobs.CronMain()
 	go api.RunHttpServer()
 	go task.RunMachineryServer()
 
@@ -28,12 +29,10 @@ func main() {
 }
 
 func initLogger() {
-	utils.InitLogger()
-}
-
-func initConfigEnv() {
-	utils.InitEnv()
-	//utils.InitConfig()
+	file, err := os.OpenFile("log/production.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	if err == nil {
+		logrus.SetOutput(file)
+	}
 }
 
 func initDB() {
@@ -42,8 +41,10 @@ func initDB() {
 	migrate.Seed()
 }
 
-func initGinSetting() {
-	if utils.IsProductionEnv() {
-		gin.SetMode(gin.ReleaseMode)
+func InitEnv() {
+	// 从.env文件加载env变量
+	err := godotenv.Load("config/.env")
+	if err != nil {
+		panic(err)
 	}
 }

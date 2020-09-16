@@ -3,22 +3,26 @@ package models
 import (
 	"axshare_go/internal/db"
 	"fmt"
-	"github.com/jinzhu/gorm"
 	uuid "github.com/satori/go.uuid"
-	"os"
-	"strings"
+	"gorm.io/gorm"
 )
 
 type Axure struct {
 	gorm.Model
-	Name         string       `json:"name" xml:"name" binding:"required"`
+	Name         string       `json:"name"`
 	SecretKey    string       `json:"secret_key" binding:"required"`
-	AxureGroupId uint         `gorm:"index"json:"axure_group_id"`
-	Attachments  []Attachment `json:"attachments"`
-	AxureGroup   AxureGroup
+	AxureGroupId uint         `json:"axure_group_id"`
+	AxureGroup   AxureGroup   `gorm:"foreignKey:AxureGroupId"`
+	Attachments  []Attachment `json:"attachments" gorm:"foreignKey:AxureId"`
 }
 
-func (c *Axure) BeforeCreate() (err error) {
+func FindAxure(id uint) Axure {
+	axure := Axure{}
+	db.AxshareDb.Find(&axure, id)
+	return axure
+}
+
+func (c *Axure) BeforeCreate(tx *gorm.DB) (err error) {
 	c.genSecretKey()
 	return
 }
@@ -31,21 +35,14 @@ func (c *Axure) WebLink() string {
 
 // 原型永久地址
 func (c *Axure) PermanentLink() string {
-	adminHost := os.Getenv("DASHBOARD_WEB_HOST")
-	permanentLink := strings.Join([]string{
-		adminHost, "/#/axures/", fmt.Sprint(c.ID), "?key=", c.SecretKey}, "")
-	return permanentLink
-}
-
-// 文件是否解压
-func (c *Axure) IsReleased() bool {
-	attachment := c.LatestAttachment()
-	return attachment.IsReleased()
+	return fmt.Sprintf("%s/#/axures/%d?key=%s", CacheConfig.WebDomain, c.ID, c.SecretKey)
 }
 
 func (c *Axure) LatestAttachment() Attachment {
 	attachment := Attachment{}
-	db.AxshareDb.Model(&attachment).Where("axure_id = ?", c.ID).Order("id desc").First(&attachment)
+	db.AxshareDb.Model(&attachment).
+		Where("axure_id = ?", c.ID).
+		Last(&attachment)
 	return attachment
 }
 

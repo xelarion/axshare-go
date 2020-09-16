@@ -16,6 +16,6 @@ func AllowRouterCors(router *gin.Engine) {
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}
-	config.AllowOrigins = strings.Split(os.Getenv("ALLOW_ORIGINS"), ",")
+	config.AllowOrigins = strings.Split(os.Getenv("HTTP_ALLOW_ORIGINS"), ",")
 	router.Use(cors.New(config))
 }

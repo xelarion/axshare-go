@@ -1,0 +1,42 @@
+package models
+
+import (
+	"encoding/json"
+	"errors"
+)
+
+type AttachmentReleaseStatus int
+
+const (
+	AttachmentReleaseStatusPending AttachmentReleaseStatus = iota
+	AttachmentReleaseStatusSuccessful
+	AttachmentReleaseStatusFailed
+)
+
+func (c AttachmentReleaseStatus) MarshalJSON() ([]byte, error) {
+	var status string
+	switch c {
+	case AttachmentReleaseStatusPending:
+		status = "pending"
+	case AttachmentReleaseStatusSuccessful:
+		status = "successful"
+	case AttachmentReleaseStatusFailed:
+		status = "failed"
+	}
+
+	return json.Marshal(status)
+}
+
+func (c *AttachmentReleaseStatus) UnmarshalJSON(data []byte) error {
+	switch string(data) {
+	case `"pending"`:
+		*c = AttachmentReleaseStatusPending
+	case `"successful"`:
+		*c = AttachmentReleaseStatusSuccessful
+	case `"failed"`:
+		*c = AttachmentReleaseStatusFailed
+	default:
+		return errors.New("unknown account status")
+	}
+	return nil
+}

@@ -12,13 +12,13 @@ func RunHttpServer() {
 	f, _ := os.OpenFile("log/http.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	gin.DefaultWriter = io.MultiWriter(f)
 
+	gin.SetMode(gin.ReleaseMode)
 	// 定义路由
 	router := gin.Default()
 
 	utils.AllowRouterCors(router)
 
 	//router.Use(utils.RecoveryLogToLogrus())
-	router.Use(utils.TokenAuthMiddleware())
 
 	SetV1Router(router)
 
