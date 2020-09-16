@@ -29,7 +29,7 @@ func GetAxures(c *gin.Context) {
 	}
 	var axures []models.Axure
 	axureGroupId := utils.ParseUint(c.Param("axure_group_id"))
-	relation := db.AxshareDb.Model(&models.Axure{}).Where(&models.Axure{AxureGroupId: uint(axureGroupId)}).Order("id desc")
+	relation := db.AxshareDb.Model(&models.Axure{}).Where(&models.Axure{AxureGroupId: axureGroupId}).Order("id desc")
 
 	searchConditions := utils.StringToMap(c.Query("search_conditions"))
 	if len(searchConditions) > 0 && len(searchConditions["name"].(string)) > 0 {

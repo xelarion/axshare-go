@@ -12,11 +12,11 @@ type Attachment struct {
 	Desc          string                  `json:"desc" xml:"desc" binding:"required"`
 	Link          string                  `json:"link"`
 	FileHash      string                  `json:"file_hash"`
-	ReleaseStatus AttachmentReleaseStatus `gorm:"type:smallint;default:0" json:"release_status"`
+	ReleaseStatus AttachmentReleaseStatus `json:"release_status"`
 	ReleaseError  string                  `json:"release_error"`
-	AxureId       uint                    `json:"axure_id" gorm:"index" xml:"axure_id" binding:"required"`
+	AxureId       uint                    `json:"axure_id"`
 	Axure         Axure                   `json:"axure" gorm:"foreignKey:AxureId"`
-	AccountId     uint                    `gorm:"index" json:"account_id"`
+	AccountId     uint                    `json:"account_id"`
 	Account       acct.Account            `json:"user" gorm:"foreignKey:AccountId"`
 }
 

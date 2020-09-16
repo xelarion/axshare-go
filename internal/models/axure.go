@@ -9,9 +9,9 @@ import (
 
 type Axure struct {
 	gorm.Model
-	Name         string       `json:"name" xml:"name" binding:"required"`
+	Name         string       `json:"name"`
 	SecretKey    string       `json:"secret_key" binding:"required"`
-	AxureGroupId uint         `gorm:"index"json:"axure_group_id"`
+	AxureGroupId uint         `json:"axure_group_id"`
 	AxureGroup   AxureGroup   `gorm:"foreignKey:AxureGroupId"`
 	Attachments  []Attachment `json:"attachments" gorm:"foreignKey:AxureId"`
 }
