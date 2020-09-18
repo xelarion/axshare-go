@@ -47,8 +47,13 @@ func UpdateAxureGroup(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	params := utils.GetBodyParams(c)
-	if err = db.AxshareDb.Model(&axureGroup).Updates(params).Error; err != nil {
+
+	temp := models.AxureGroup{}
+	_ = json.NewDecoder(c.Request.Body).Decode(&temp)
+	if err = db.AxshareDb.Model(&axureGroup).Debug().Updates(models.AxureGroup{
+		Name: temp.Name,
+		Desc: temp.Desc,
+	}).Error; err != nil {
 		acct.Utils.JSON(c, ogs.RspError(ogs.StatusUpdateFailed, err.Error()))
 	} else {
 		acct.Utils.JSON(c, ogs.RspOK("Update Successfully"))
