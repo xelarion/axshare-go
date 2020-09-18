@@ -47,7 +47,7 @@ func (c *Attachment) WebLink() string {
 		return ""
 	}
 
-	return CacheConfig.WebDomain + c.Link
+	return CacheConfig.WebDomain + "/ax" + c.Link
 }
 
 // 原型压缩包下载地址
