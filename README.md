@@ -18,7 +18,12 @@ go build -ldflags '-w -s' cmd/axshare_go.go
 ./axshare_go
 ```
 
-### more
+## Software to be installed
+`wget` - Download files from QiNiu
+
+`unar` - Extract the contents of archive files
+
+## more
 ```shell script
 # kill
 pgrep -f ./axshare_go | xargs kill -9;true
