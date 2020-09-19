@@ -1,14 +1,28 @@
-Web: https://github.com/XanderCheung/axshare
+# axhsare-go
 
-Init env software
+Server API of `axshare` for hosting and sharing Axure RP prototypes
 
-    chmod +x scripts/init_env.sh
-    ./scripts/init_env.sh
+Web Project: https://github.com/XanderCheung/axshare
 
-Dockerize axshare-vue
+## Build Step
+```shell script
+# config
+cp config/.env.example config/.env
 
-    // build app
-    docker build -t ervincheung/axshare-go .
-    // run single app
-    docker run -d -p 10524:10524 --rm --name dockerize-axshare_go ervincheung/axshare-go
-***
+# build
+go build -ldflags '-w -s' cmd/axshare_go.go
+# build linux app
+# env GOOS=linux go build -ldflags '-w -s' cmd/axshare_go.go
+
+# run
+./axshare_go
+```
+
+### more
+```shell script
+# kill
+pgrep -f ./axshare_go | xargs kill -9;true
+
+# nohup 
+nohup ./axshare_go >> log/production.log &
+```

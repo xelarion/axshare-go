@@ -50,7 +50,7 @@ func UpdateAxureGroup(c *gin.Context) {
 
 	temp := models.AxureGroup{}
 	_ = json.NewDecoder(c.Request.Body).Decode(&temp)
-	if err = db.AxshareDb.Model(&axureGroup).Debug().Updates(models.AxureGroup{
+	if err = db.AxshareDb.Model(&axureGroup).Updates(models.AxureGroup{
 		Name: temp.Name,
 		Desc: temp.Desc,
 	}).Error; err != nil {

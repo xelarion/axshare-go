@@ -5,3 +5,4 @@ config/*.env
 axshare_go
 
 !/log/.keep
+.DS_Store

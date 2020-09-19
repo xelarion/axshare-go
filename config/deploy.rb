@@ -53,7 +53,7 @@ namespace :executer do
       within release_path do
         upload! client_name, current_path
         execute :pgrep, "-f ./axshare_go | xargs kill -9;true"
-        execute "nohup ./axshare_go >> log/production.log &"
+        execute :nohup, "./axshare_go >> log/production.log &"
       end
     end
   end
