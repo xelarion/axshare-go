@@ -32,5 +32,5 @@ pgrep -f ./axshare_go | xargs kill -9;true
 nohup ./axshare_go >> log/production.log &
 
 # deploy using capistrano
-cap production deploy
+bundle exec cap production deploy
 ```
