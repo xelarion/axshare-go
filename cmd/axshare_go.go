@@ -4,7 +4,6 @@ import (
 	"axshare_go/api"
 	"axshare_go/internal/db"
 	"axshare_go/internal/db/migrate"
-	"axshare_go/internal/jobs"
 	"axshare_go/internal/models"
 	"axshare_go/internal/task"
 	"github.com/joho/godotenv"
@@ -21,7 +20,7 @@ func main() {
 
 	serverChan := make(chan int)
 
-	go jobs.CronMain()
+	go task.CronMain()
 	go api.RunHttpServer()
 	go task.RunMachineryServer()
 

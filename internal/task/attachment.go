@@ -7,8 +7,7 @@ import (
 )
 
 func releaseAttachment(attachmentId uint) error {
-	attachment := models.Attachment{}
-	db.AxshareDb.First(&attachment, attachmentId)
+	attachment := models.FindAttachment(attachmentId)
 	if attachment.ID == 0 {
 		return nil
 	}
