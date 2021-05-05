@@ -10,6 +10,7 @@ import (
 
 // 清理原型组织陈旧的解压文件(html)
 func cleanAxureOldAttachments() {
+	logrus.Info("cleanAxureOldAttachments begin")
 	// 一周前（只清理一周内没有更新过的附件）
 	aWeekAgo := time.Now().AddDate(0, 0, -7).UTC()
 
@@ -34,4 +35,6 @@ func cleanAxureOldAttachments() {
 
 		return nil
 	})
+
+	logrus.Info("cleanAxureOldAttachments end")
 }
