@@ -2,6 +2,9 @@ package models
 
 import (
 	"axshare_go/internal/db"
+	"axshare_go/internal/utils"
+	"errors"
+	"fmt"
 	"github.com/qiniu/api.v7/auth/qbox"
 	"github.com/qiniu/api.v7/storage"
 	"sync"
@@ -35,6 +38,7 @@ type PublicConfig struct {
 
 var CacheConfig = Config{}
 var CacheConfigLock = sync.RWMutex{}
+var CheckReleaseDirLock = sync.RWMutex{}
 
 func InitCacheConfig() {
 	CacheConfigLock.Lock()
@@ -66,4 +70,27 @@ func initDefaultConfig() {
 	CacheConfig.FileReleaseDir = "~/web/axure/"
 	CacheConfig.WebDomain = "https://axshare.you-domain.com"
 	CacheConfig.QiniuUploadUrl = "https://up-z2.qiniup.com"
+}
+
+// MkdirFileReleaseDir 生成 原型解压文件夹
+func (c *Config) MkdirFileReleaseDir() (fileReleaseDir string, err error) {
+	CheckReleaseDirLock.Lock()
+	defer CheckReleaseDirLock.Unlock()
+
+	if fileReleaseDir, err = utils.ExpandPath(CacheConfig.FileReleaseDir); err != nil {
+		msg := fmt.Sprintf("请检查原型解压文件夹配置是否正确 '%s', error: , %s", CacheConfig.FileReleaseDir, err.Error())
+		return fileReleaseDir, errors.New(msg)
+	}
+
+	return fileReleaseDir, utils.MkdirPath(fileReleaseDir)
+}
+
+// FileReleaseAbsDir 获取 原型解压文件夹
+func (c *Config) FileReleaseAbsDir() (absDir string, err error) {
+	if absDir, err = utils.ExpandPath(CacheConfig.FileReleaseDir); err != nil {
+		msg := fmt.Sprintf("请检查原型解压文件夹配置是否正确 '%s', error: , %s", CacheConfig.FileReleaseDir, err.Error())
+		return absDir, errors.New(msg)
+	}
+
+	return absDir, nil
 }

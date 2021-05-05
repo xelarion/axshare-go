@@ -11,6 +11,7 @@ const (
 	AttachmentReleaseStatusPending AttachmentReleaseStatus = iota
 	AttachmentReleaseStatusSuccessful
 	AttachmentReleaseStatusFailed
+	AttachmentReleaseStatusCleaned
 )
 
 func (c AttachmentReleaseStatus) MarshalJSON() ([]byte, error) {
@@ -22,6 +23,8 @@ func (c AttachmentReleaseStatus) MarshalJSON() ([]byte, error) {
 		status = "successful"
 	case AttachmentReleaseStatusFailed:
 		status = "failed"
+	case AttachmentReleaseStatusCleaned:
+		status = "cleaned"
 	}
 
 	return json.Marshal(status)
@@ -35,6 +38,8 @@ func (c *AttachmentReleaseStatus) UnmarshalJSON(data []byte) error {
 		*c = AttachmentReleaseStatusSuccessful
 	case `"failed"`:
 		*c = AttachmentReleaseStatusFailed
+	case `"cleaned"`:
+		*c = AttachmentReleaseStatusCleaned
 	default:
 		return errors.New("unknown account status")
 	}

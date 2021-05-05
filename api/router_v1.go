@@ -43,6 +43,8 @@ func SetV1Router(router *gin.Engine) {
 		r.GET("/axure_groups/:axure_group_id/axures/:axure_id/attachments", v1.GetAttachments)
 
 		r.GET("/attachments", v1.GetAllAttachments)
+		r.POST("/attachments/:id/release", v1.ReleaseAttachment)
+		r.POST("/attachments/:id/clean", v1.CleanAttachment)
 
 		r.GET("/upload/token", v1.CreateUploadToken)
 		r.GET("/config", v1.GetConfig)

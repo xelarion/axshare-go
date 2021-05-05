@@ -1,9 +1,11 @@
 package models
 
 import (
+	"axshare_go/internal/db"
 	"axshare_go/internal/utils"
 	"github.com/xandercheung/acct"
 	"gorm.io/gorm"
+	"path/filepath"
 	"strings"
 )
 
@@ -20,8 +22,15 @@ type Attachment struct {
 	Account       acct.Account            `json:"user" gorm:"foreignKey:AccountId"`
 }
 
+func FindAttachment(id uint) Attachment {
+	attachment := Attachment{}
+	db.AxshareDb.Take(&attachment, id)
+	return attachment
+}
+
 func (c *Attachment) GenFileName() string {
-	axure := FindAxure(c.AxureId)
+	axure := Axure{}
+	db.AxshareDb.Unscoped().Find(&axure, c.AxureId)
 	fileName := strings.Join([]string{
 		utils.FormatUint(axure.AxureGroupId),
 		utils.Strftime(c.CreatedAt, "20060102150405"),
@@ -29,6 +38,34 @@ func (c *Attachment) GenFileName() string {
 	}, "_")
 
 	return fileName
+}
+
+// AxureFileDir 解压后原型html文件夹
+func (c *Attachment) AxureFileDir() (string, error) {
+	fileReleaseDir, err := CacheConfig.FileReleaseAbsDir()
+	if err != nil {
+		return "", err
+	}
+
+	return filepath.Join(fileReleaseDir, c.GenFileName()), nil
+}
+
+// CleanAxureFileDir 删除 解压后原型html文件夹
+func (c *Attachment) CleanAxureFileDir() error {
+	axureFileDir, err := c.AxureFileDir()
+	if err != nil {
+		return err
+	}
+
+	if err = utils.RunCommand("rm", "-rf", axureFileDir); err != nil {
+		return err
+	}
+
+	db.AxshareDb.Model(c).Updates(map[string]interface{}{
+		"release_status": AttachmentReleaseStatusCleaned,
+	})
+
+	return nil
 }
 
 // 文件是否解压

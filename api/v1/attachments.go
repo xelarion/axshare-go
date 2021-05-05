@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/xandercheung/acct"
 	"github.com/xandercheung/ogs-go"
+	"gorm.io/gorm"
 	"net/http"
 )
 
@@ -28,14 +29,48 @@ func GetAllAttachments(c *gin.Context) {
 	var attachments []models.Attachment
 	relation := db.AxshareDb.Model(&models.Attachment{}).Order("id desc")
 	relation, paginate := acct.Utils.PaginateGin(relation, c)
-	relation.Preload("Account").
-		Preload("Axure").
+	relation.
+		Preload("Account", func(db *gorm.DB) *gorm.DB {
+			return db.Unscoped()
+		}).
+		Preload("Axure", func(db *gorm.DB) *gorm.DB {
+			return db.Unscoped()
+		}).
 		Preload("Axure.AxureGroup").
 		Find(&attachments)
 
 	c.JSON(http.StatusOK, ogs.RspOKWithPaginate("",
 		FormatAttachmentActivityList(attachments),
 		paginate))
+}
+
+func ReleaseAttachment(c *gin.Context) {
+	id := utils.ParseUint(c.Param("id"))
+	attachment := models.FindAttachment(id)
+	if attachment.ID == 0 {
+		acct.Utils.JSON(c, ogs.RspError(1, "操作失败，该记录不存在"))
+	}
+
+	if attachment.IsFileUploaded() {
+		releaseAttachment(attachment.ID)
+		acct.Utils.JSON(c, ogs.RspOK("操作成功，请稍后刷新页面查看"))
+	} else {
+		acct.Utils.JSON(c, ogs.RspError(1, "操作失败，该附件文件不存在"))
+	}
+}
+
+func CleanAttachment(c *gin.Context) {
+	id := utils.ParseUint(c.Param("id"))
+	attachment := models.FindAttachment(id)
+	if attachment.ID == 0 {
+		acct.Utils.JSON(c, ogs.RspError(1, "操作失败，该记录不存在"))
+	}
+
+	if err := attachment.CleanAxureFileDir(); err != nil {
+		acct.Utils.JSON(c, ogs.RspError(1, err.Error()))
+	} else {
+		acct.Utils.JSON(c, ogs.RspOK("操作成功"))
+	}
 }
 
 func FormatAttachmentActivityList(attachments []models.Attachment) []map[string]interface{} {

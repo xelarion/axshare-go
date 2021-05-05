@@ -129,6 +129,7 @@ func DestroyAxure(c *gin.Context) {
 	if err := db.AxshareDb.Delete(&axure).Error; err != nil {
 		acct.Utils.JSON(c, ogs.RspOK(err.Error()))
 	} else {
+		cleanAxure(axure.ID)
 		acct.Utils.JSON(c, ogs.RspOK("Destroy Successfully"))
 	}
 }
@@ -194,6 +195,19 @@ func releaseAttachment(attachmentId uint) {
 			{
 				Type:  "uint",
 				Value: attachmentId,
+			},
+		},
+	}
+	_ = task.Send(&newTask)
+}
+
+func cleanAxure(axureId uint) {
+	newTask := tasks.Signature{
+		Name: "clean_deleted_axure_attachments",
+		Args: []tasks.Arg{
+			{
+				Type:  "uint",
+				Value: axureId,
 			},
 		},
 	}
