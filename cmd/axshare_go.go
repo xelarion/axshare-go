@@ -20,6 +20,7 @@ func main() {
 
 	serverChan := make(chan int)
 
+	task.ReleaseAllAxures()
 	go task.CronMain()
 	go api.RunHttpServer()
 	go task.RunMachineryServer()
