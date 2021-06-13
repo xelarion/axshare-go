@@ -28,7 +28,7 @@ func cleanAxureOldAttachments() {
 
 			for _, attachment := range oldAttachments {
 				if err := attachment.CleanAxureFileDir(); err != nil {
-					logrus.Error(err)
+					logrus.Error("cleanAxureOldAttachments error: ", err)
 				}
 			}
 		}
