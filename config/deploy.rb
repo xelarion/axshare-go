@@ -4,7 +4,7 @@ lock '~> 3.14.0'
 # 项目名称
 set :application, 'axshare-go'
 # 仓库地址
-set :repo_url, 'git@github.com:ErvinCheung/axshare-go.git'
+set :repo_url, 'git@github.com:XanderCheung/axshare-go.git'
 
 # Default branch is :master
 ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
