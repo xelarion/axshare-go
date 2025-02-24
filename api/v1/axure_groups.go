@@ -14,7 +14,7 @@ import (
 
 func GetAxureGroups(c *gin.Context) {
 	var axureGroups []models.AxureGroup
-	db.AxshareDb.Model(&models.AxureGroup{}).Find(&axureGroups)
+	db.AxshareDb.Model(&models.AxureGroup{}).Order("id DESC").Find(&axureGroups)
 	acct.Utils.JSON(c, ogs.RspOKWithData("", axureGroups))
 }
 
